@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Basic Feature Extraction Methods | Practical Machine Learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Basic Feature Extraction Methods" />
+<meta name="author" content="Uday Paila" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Feature Extraction from raw text" />
+<meta property="og:description" content="Feature Extraction from raw text" />
+<link rel="canonical" href="https://udibhaskar.github.io/practical-ml/nlp/feature%20extraction/bow/tfidf/hashing%20vectorizer/2020/03/13/Basic-feature-Extraction.html" />
+<meta property="og:url" content="https://udibhaskar.github.io/practical-ml/nlp/feature%20extraction/bow/tfidf/hashing%20vectorizer/2020/03/13/Basic-feature-Extraction.html" />
+<meta property="og:site_name" content="Practical Machine Learning" />
+<meta property="og:image" content="https://miro.medium.com/max/1400/1*ns1YWa4cU78B2bpkSOky7w.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-03-13T00:00:00-05:00" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Uday Paila"},"description":"Feature Extraction from raw text","mainEntityOfPage":{"@type":"WebPage","@id":"https://udibhaskar.github.io/practical-ml/nlp/feature%20extraction/bow/tfidf/hashing%20vectorizer/2020/03/13/Basic-feature-Extraction.html"},"@type":"BlogPosting","url":"https://udibhaskar.github.io/practical-ml/nlp/feature%20extraction/bow/tfidf/hashing%20vectorizer/2020/03/13/Basic-feature-Extraction.html","headline":"Basic Feature Extraction Methods","dateModified":"2020-03-13T00:00:00-05:00","datePublished":"2020-03-13T00:00:00-05:00","image":"https://miro.medium.com/max/1400/1*ns1YWa4cU78B2bpkSOky7w.png","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/practical-ml/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://udibhaskar.github.io/practical-ml/feed.xml" title="Practical Machine Learning" /><link rel="shortcut icon" type="image/x-icon" href="/practical-ml/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Basic Feature Extraction Methods | Practical Machine Learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Basic Feature Extraction Methods" />
+<meta name="author" content="Uday Paila" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Feature Extraction from raw text" />
+<meta property="og:description" content="Feature Extraction from raw text" />
+<link rel="canonical" href="https://udibhaskar.github.io/practical-ml/nlp/feature%20extraction/bow/tfidf/hashing%20vectorizer/2020/03/13/Basic-feature-Extraction.html" />
+<meta property="og:url" content="https://udibhaskar.github.io/practical-ml/nlp/feature%20extraction/bow/tfidf/hashing%20vectorizer/2020/03/13/Basic-feature-Extraction.html" />
+<meta property="og:site_name" content="Practical Machine Learning" />
+<meta property="og:image" content="https://miro.medium.com/max/1400/1*ns1YWa4cU78B2bpkSOky7w.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-03-13T00:00:00-05:00" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Uday Paila"},"description":"Feature Extraction from raw text","mainEntityOfPage":{"@type":"WebPage","@id":"https://udibhaskar.github.io/practical-ml/nlp/feature%20extraction/bow/tfidf/hashing%20vectorizer/2020/03/13/Basic-feature-Extraction.html"},"@type":"BlogPosting","url":"https://udibhaskar.github.io/practical-ml/nlp/feature%20extraction/bow/tfidf/hashing%20vectorizer/2020/03/13/Basic-feature-Extraction.html","headline":"Basic Feature Extraction Methods","dateModified":"2020-03-13T00:00:00-05:00","datePublished":"2020-03-13T00:00:00-05:00","image":"https://miro.medium.com/max/1400/1*ns1YWa4cU78B2bpkSOky7w.png","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://udibhaskar.github.io/practical-ml/feed.xml" title="Practical Machine Learning" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head><body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/practical-ml/">Practical Machine Learning</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/practical-ml/about/">About Me</a><a class="page-link" href="/practical-ml/search/">Search</a><a class="page-link" href="/practical-ml/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Basic Feature Extraction Methods</h1><p class="page-description">Feature Extraction from raw text</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-03-13T00:00:00-05:00" itemprop="datePublished">
+        Mar 13, 2020
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Uday Paila</span></span>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      10 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/practical-ml/categories/#NLP">NLP</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/practical-ml/categories/#feature extraction">feature extraction</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/practical-ml/categories/#bow">bow</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/practical-ml/categories/#tfidf">tfidf</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/practical-ml/categories/#hashing vectorizer">hashing vectorizer</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          
+          
+          
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#Document-Term-Matrix">Document Term Matrix </a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#Bag-of-Words">Bag of Words </a></li>
+<li class="toc-entry toc-h3"><a href="#TF-IDF">TF-IDF </a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#Term-Frequency">Term Frequency </a></li>
+<li class="toc-entry toc-h4"><a href="#Inverse-Document-Frequency">Inverse Document Frequency </a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#What-if-we-have-so-much-vocab-in-our-corpus?">What if we have so much vocab in our corpus? </a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#Limiting-the-number-of-vocab-in-BOW/TFIDF">Limiting the number of vocab in BOW/TFIDF </a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#Some-of-the-problems-with-the-CountVectorizer-and-TfidfVectorizer">Some of the problems with the CountVectorizer and TfidfVectorizer </a></li>
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2020-03-13-Basic-feature-Extraction.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Document-Term-Matrix">
+<a class="anchor" href="#Document-Term-Matrix" aria-hidden="true"><span class="octicon octicon-link"></span></a>Document Term Matrix<a class="anchor-link" href="#Document-Term-Matrix"> </a>
+</h2>
+<p>It is a matrix with rows contains unique documents and the column contain the unique words/tokens. Let's take sample documents and store them in the <code>sample_documents</code>.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sample_documents</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'This is the NLP notebook'</span><span class="p">,</span> 
+                    <span class="s1">'This is basic NLP. NLP is easy'</span><span class="p">,</span>
+                    <span class="s1">'NLP is awesome'</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In the above sample_documents, we have 3 documents and 8 unique words. The Document Term matrix contains 3 rows and 8 columns as below.
+<img src="https://i.imgur.com/8tk9vQH.png" alt="DTM"></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>There are many ways to determine the value(content) in the above matrix. I will discuss some of the ways below. After filling those values, we can use each row as vector representation of documents.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Bag-of-Words">
+<a class="anchor" href="#Bag-of-Words" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bag of Words<a class="anchor-link" href="#Bag-of-Words"> </a>
+</h3>
+<p>In this, we will fill with the number of times that word occurred in the same document.</p>
+<p><br></p>
+<p><img src="https://i.imgur.com/lxNuXWh.png" alt="BOW"></p>
+<p><br></p>
+<p>If you check the above matrix, "<code>nlp</code>" occurred two times in the document-2 so value corresponding to that is 2.  If it occurs <code>n times</code> in the document, the value corresponding is <code>n</code>. We can do the same in the using <code>CountVectorizer</code> in  <code>sklearn</code>.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">##import count vectorizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">CountVectorizer</span>
+<span class="c1">#creating CountVectorizer instance</span>
+<span class="n">bow_vec</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">lowercase</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">analyzer</span><span class="o">=</span><span class="s1">'word'</span><span class="p">)</span>
+<span class="c1">#fitting with our data</span>
+<span class="n">bow_vec</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">sample_documents</span><span class="p">)</span>
+<span class="c1">#transforming the data to the vector</span>
+<span class="n">sample_bow_metrix</span> <span class="o">=</span> <span class="n">bow_vec</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">sample_documents</span><span class="p">)</span>
+<span class="c1">#printing</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Unique words --&gt;"</span><span class="p">,</span> <span class="n">bow_vec</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"BOW Matrix --&gt;"</span><span class="p">,</span><span class="n">sample_bow_metrix</span><span class="o">.</span><span class="n">toarray</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"vocab to index dict --&gt;"</span><span class="p">,</span> <span class="n">bow_vec</span><span class="o">.</span><span class="n">vocabulary_</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Unique words --&gt; ['awesome', 'basic', 'easy', 'is', 'nlp', 'notebook', 'the', 'this']
+BOW Matrix --&gt; [[0 0 0 1 1 1 1 1]
+ [0 1 1 2 2 0 0 1]
+ [1 0 0 1 1 0 0 0]]
+vocab to index dict --&gt; {'this': 7, 'is': 3, 'the': 6, 'nlp': 4, 'notebook': 5, 'basic': 1, 'easy': 2, 'awesome': 0}
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p></p>
+<div class="flash">
+    <svg class="octicon octicon-info octicon octicon-info octicon octicon-info" viewbox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg>
+    <strong>Note: </strong>How CountVectorizer gets the unique words? -- It first splits the documents into words and then it gets the unique words. <code>CountVectorizer</code> uses <code>token_pattern</code> or <code>tokenizer</code>, we can give our custom <code>tokenization</code> algorithm to get words from a sentence. Please try to read the documentation of the <code>sklearn</code> to know more about it.
+</div>
+<br>
+<p>We can also get the n-gram words as vocab. please check the below code. That was written for unigrams and bi-grams. 
+</p>
+<div class="flash">
+    <svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewbox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg>
+    <strong>Note: </strong>N-grams are simply all combinations of adjacent words of length n that you can find in your source text.
+</div>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#creating CountVectorizer instance with ngram_range = (1,2) i.e uni-gram and bi-gram</span>
+<span class="n">bow_vec</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">lowercase</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">analyzer</span><span class="o">=</span><span class="s1">'word'</span><span class="p">)</span>
+<span class="c1">#fitting with our data</span>
+<span class="n">bow_vec</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">sample_documents</span><span class="p">)</span>
+<span class="c1">#transforming the data to the vector</span>
+<span class="n">sample_bow_metrix</span> <span class="o">=</span> <span class="n">bow_vec</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">sample_documents</span><span class="p">)</span>
+<span class="c1">#printing</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Unique words --&gt;"</span><span class="p">,</span> <span class="n">bow_vec</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"BOW Matrix --&gt;"</span><span class="p">,</span><span class="n">sample_bow_metrix</span><span class="o">.</span><span class="n">toarray</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"vocab to index dict --&gt;"</span><span class="p">,</span> <span class="n">bow_vec</span><span class="o">.</span><span class="n">vocabulary_</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Unique words --&gt; ['awesome', 'basic', 'basic nlp', 'easy', 'is', 'is awesome', 'is basic', 'is easy', 'is the', 'nlp', 'nlp is', 'nlp nlp', 'nlp notebook', 'notebook', 'the', 'the nlp', 'this', 'this is']
+BOW Matrix --&gt; [[0 0 0 0 1 0 0 0 1 1 0 0 1 1 1 1 1 1]
+ [0 1 1 1 2 0 1 1 0 2 1 1 0 0 0 0 1 1]
+ [1 0 0 0 1 1 0 0 0 1 1 0 0 0 0 0 0 0]]
+vocab to index dict --&gt; {'this': 16, 'is': 4, 'the': 14, 'nlp': 9, 'notebook': 13, 'this is': 17, 'is the': 8, 'the nlp': 15, 'nlp notebook': 12, 'basic': 1, 'easy': 3, 'is basic': 6, 'basic nlp': 2, 'nlp nlp': 11, 'nlp is': 10, 'is easy': 7, 'awesome': 0, 'is awesome': 5}
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="TF-IDF">
+<a class="anchor" href="#TF-IDF" aria-hidden="true"><span class="octicon octicon-link"></span></a>TF-IDF<a class="anchor-link" href="#TF-IDF"> </a>
+</h3>
+<p>In this, we will fill with <code>TF*IDF</code>.</p>
+<h4 id="Term-Frequency">
+<a class="anchor" href="#Term-Frequency" aria-hidden="true"><span class="octicon octicon-link"></span></a>Term Frequency<a class="anchor-link" href="#Term-Frequency"> </a>
+</h4>\begin{align}
+TF_K = \frac{\text{No of times word K occurred in that document}}{\text{Total number of words in that document}}
+\end{align}
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p></p>
+<div class="flash">
+    <svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewbox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg>
+    <strong>Note: </strong><code>TF</code> of a word is only dependent on a particular document. It won’t depend on the total corpus of documents. <code>TF</code> value of word changes from document to document
+</div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Inverse-Document-Frequency">
+<a class="anchor" href="#Inverse-Document-Frequency" aria-hidden="true"><span class="octicon octicon-link"></span></a>Inverse Document Frequency<a class="anchor-link" href="#Inverse-Document-Frequency"> </a>
+</h4>\begin{align}
+IDF_K = log(\frac{\text{Total number of documents}}{\text{Number of documents with word K}} )
+\end{align}
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p></p>
+<div class="flash">
+    <svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewbox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg>
+    <strong>Note: </strong><code>IDF</code> of a word dependent on total corpus of documents. <code>IDF</code> value of word is constant for total corpus.
+</div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>You can think <code>IDF</code> as the information content of the word.</p>
+\begin{align}
+\text{Information Content} = -log(\text{Probability of Word}) \\
+\\
+\text{Probability of Word K} = \frac{\text{Number of documents with word K}}{\text{Total number of documents}}
+\end{align}
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can calculate the <code>TFIDF</code> vectors using <code>TfidfVectorizer</code> in sklearn.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="c1">#creating TfidfVectorizer instance</span>
+<span class="n">tfidf_vec</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">()</span>
+<span class="c1">#fitting with our data</span>
+<span class="n">tfidf_vec</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">sample_documents</span><span class="p">)</span>
+<span class="c1">#transforming the data to the vector</span>
+<span class="n">sample_tfidf_metrix</span> <span class="o">=</span> <span class="n">tfidf_vec</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">sample_documents</span><span class="p">)</span>
+<span class="c1">#printing</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Unique words --&gt;"</span><span class="p">,</span> <span class="n">tfidf_vec</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"TFIDF Matrix --&gt;"</span><span class="p">,</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">,</span><span class="n">sample_tfidf_metrix</span><span class="o">.</span><span class="n">toarray</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"vocab to index dict --&gt;"</span><span class="p">,</span> <span class="n">tfidf_vec</span><span class="o">.</span><span class="n">vocabulary_</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Unique words --&gt; ['awesome', 'basic', 'easy', 'is', 'nlp', 'notebook', 'the', 'this']
+TFIDF Matrix --&gt; 
+ [[0.         0.         0.         0.32630952 0.32630952 0.55249005
+  0.55249005 0.42018292]
+ [0.         0.43157129 0.43157129 0.50978591 0.50978591 0.
+  0.         0.32822109]
+ [0.76749457 0.         0.         0.45329466 0.45329466 0.
+  0.         0.        ]]
+vocab to index dict --&gt; {'this': 7, 'is': 3, 'the': 6, 'nlp': 4, 'notebook': 5, 'basic': 1, 'easy': 2, 'awesome': 0}
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>With the <code>TfidfVectorizer</code> also we can get the n-grams and we can give our own <code>tokenization</code> algorithm.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="What-if-we-have-so-much-vocab-in-our-corpus?">
+<a class="anchor" href="#What-if-we-have-so-much-vocab-in-our-corpus?" aria-hidden="true"><span class="octicon octicon-link"></span></a>What if we have so much vocab in our corpus?<a class="anchor-link" href="#What-if-we-have-so-much-vocab-in-our-corpus?"> </a>
+</h2>
+<p>If we have many unique words, our <code>BOW/TFIDF</code> vectors will be very high dimensional that may cause <code>curse of dimensionality</code> problem.  We can solve this with the below methods.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Limiting-the-number-of-vocab-in-BOW/TFIDF">
+<a class="anchor" href="#Limiting-the-number-of-vocab-in-BOW/TFIDF" aria-hidden="true"><span class="octicon octicon-link"></span></a>Limiting the number of vocab in BOW/TFIDF<a class="anchor-link" href="#Limiting-the-number-of-vocab-in-BOW/TFIDF"> </a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In <code>CountVectorize</code>, we can do this using max_features, min_df, max_df. You can use vocabulary parameter to get specific words only. Try to read the documentation of <code>CountVectorize</code> to know better about those. You can check the sample code below.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#creating CountVectorizer instance, limited to 4 features only</span>
+<span class="n">bow_vec</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">lowercase</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span>
+                                <span class="n">analyzer</span><span class="o">=</span><span class="s1">'word'</span><span class="p">,</span> <span class="n">max_features</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="c1">#fitting with our data</span>
+<span class="n">bow_vec</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">sample_documents</span><span class="p">)</span>
+<span class="c1">#transforming the data to the vector</span>
+<span class="n">sample_bow_metrix</span> <span class="o">=</span> <span class="n">bow_vec</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">sample_documents</span><span class="p">)</span>
+<span class="c1">#printing</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Unique words --&gt;"</span><span class="p">,</span> <span class="n">bow_vec</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"BOW Matrix --&gt;"</span><span class="p">,</span><span class="n">sample_bow_metrix</span><span class="o">.</span><span class="n">toarray</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"vocab to index dict --&gt;"</span><span class="p">,</span> <span class="n">bow_vec</span><span class="o">.</span><span class="n">vocabulary_</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Unique words --&gt; ['awesome', 'is', 'nlp', 'this']
+BOW Matrix --&gt; [[0 1 1 1]
+ [0 2 2 1]
+ [1 1 1 0]]
+vocab to index dict --&gt; {'this': 3, 'is': 1, 'nlp': 2, 'awesome': 0}
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>You can do similar thing with <code>TfidfVectorizer</code> with same parameters. Please read the documentation.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Some-of-the-problems-with-the-CountVectorizer-and-TfidfVectorizer">
+<a class="anchor" href="#Some-of-the-problems-with-the-CountVectorizer-and-TfidfVectorizer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Some of the problems with the CountVectorizer and TfidfVectorizer<a class="anchor-link" href="#Some-of-the-problems-with-the-CountVectorizer-and-TfidfVectorizer"> </a>
+</h2>
+<ul>
+<li>If we have a large corpus, vocabulary will also be large and for <code>fit</code> function, you have to get all documents into RAM. This may be impossible if you don't have sufficient RAM.</li>
+<li>building the <code>vocab</code> requires a full pass over the dataset hence it is not possible to fit text classifiers in a strictly online manner.</li>
+<li>After the <code>fit</code>, we have to store the <code>vocab dict</code>, which takes so much memory. If we want to deploy in <code>memory-constrained</code> environments like amazon lambda, IoT devices, mobile devices, etc.., these maybe not useful.</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p></p>
+<div class="flash flash-warn">
+    <svg class="octicon octicon-zap" viewbox="0 0 10 16" version="1.1" width="10" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M10 7H6l3-7-9 9h4l-3 7 9-9z"></path></svg>
+    <strong>Important: </strong>We can solve the first problem with an iterator over the total data and building the <code>vocab</code> then, using that <code>vocab</code>, we can create the <code>BOW</code> matrix in the sparse format and then <code>TFIDF</code> vectors using <code>TfidfTransformer</code>. The sparse matrix won’t take much space so, we can store the BOW sparse matrix in our RAM to create the TFIDF sparse matrix.
+</div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I have written a sample code to do that for the same data. I have iterated over the data,  created vocab, and using that vocab, created BOW.  We can write a much more optimized version of the code, This is just a sample to show.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">##for tokenization</span>
+<span class="kn">import</span> <span class="nn">nltk</span>
+<span class="c1">#vertical stack of sparse matrix</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">vstack</span>
+<span class="c1">#vocab set</span>
+<span class="n">vocab_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+<span class="c1">#looping through the points(for huge data, you will get from your disk/table)</span>
+<span class="k">for</span> <span class="n">data_point</span> <span class="ow">in</span> <span class="n">sample_documents</span><span class="p">:</span>
+    <span class="c1">#getting words</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">nltk</span><span class="o">.</span><span class="n">tokenize</span><span class="o">.</span><span class="n">word_tokenize</span><span class="p">(</span><span class="n">data_point</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">word</span><span class="o">.</span><span class="n">isalpha</span><span class="p">():</span>
+            <span class="n">vocab_set</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+<span class="n">vectorizer_bow</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">vocabulary</span><span class="o">=</span><span class="n">vocab_set</span><span class="p">)</span>
+
+<span class="n">bow_data</span> <span class="o">=</span> <span class="p">[]</span> 
+<span class="k">for</span> <span class="n">data_point</span> <span class="ow">in</span> <span class="n">sample_documents</span><span class="p">:</span> <span class="c1"># use a generator</span>
+    <span class="c1">##if we give the vocab, there will be no data lekage for fit_transform so we can use that</span>
+    <span class="n">bow_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vectorizer_bow</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">([</span><span class="n">data_point</span><span class="p">]))</span>
+
+<span class="n">final_bow</span> <span class="o">=</span> <span class="n">vstack</span><span class="p">(</span><span class="n">bow_data</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Unique words --&gt;"</span><span class="p">,</span> <span class="n">vectorizer_bow</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"BOW Matrix --&gt;"</span><span class="p">,</span><span class="n">final_bow</span><span class="o">.</span><span class="n">toarray</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"vocab to index dict --&gt;"</span><span class="p">,</span> <span class="n">vectorizer_bow</span><span class="o">.</span><span class="n">vocabulary_</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Unique words --&gt; ['awesome', 'basic', 'easy', 'is', 'nlp', 'notebook', 'the', 'this']
+BOW Matrix --&gt; [[0 0 0 1 1 1 1 1]
+ [0 1 1 2 2 0 0 1]
+ [1 0 0 1 1 0 0 0]]
+vocab to index dict --&gt; {'awesome': 0, 'basic': 1, 'easy': 2, 'is': 3, 'nlp': 4, 'notebook': 5, 'the': 6, 'this': 7}
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The above result is similar to the one we printed while doing the BOW, you can check that.</p>
+<p><br></p>
+<p>Using the above <code>BOW</code> sparse matrix and the <code>TfidfTransformer</code>, we can create the <code>TFIDF</code> vectors. you can check below code.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#importing</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">TfidfTransformer</span>
+<span class="c1">#instanciate the class</span>
+<span class="n">vec_tfidftransformer</span> <span class="o">=</span> <span class="n">TfidfTransformer</span><span class="p">()</span>
+<span class="c1">#fit with the BOW sparse data </span>
+<span class="n">vec_tfidftransformer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">final_bow</span><span class="p">)</span>
+<span class="n">vec_tfidf</span> <span class="o">=</span> <span class="n">vec_tfidftransformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">final_bow</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">vec_tfidf</span><span class="o">.</span><span class="n">toarray</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[[0.         0.         0.         0.32630952 0.32630952 0.55249005
+  0.55249005 0.42018292]
+ [0.         0.43157129 0.43157129 0.50978591 0.50978591 0.
+  0.         0.32822109]
+ [0.76749457 0.         0.         0.45329466 0.45329466 0.
+  0.         0.        ]]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The above result is similar to the one we printed while doing the TFIDF, you can check that.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p></p>
+<div class="flash flash-warn">
+    <svg class="octicon octicon-zap octicon octicon-zap" viewbox="0 0 10 16" version="1.1" width="10" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M10 7H6l3-7-9 9h4l-3 7 9-9z"></path></svg>
+    <strong>Important: </strong>Other than our own iterator/generator, if we have data in one file or multiple files, we can directly give <code>input</code> parameter as <code>file/filename</code> and while <code>fit</code> function, we can give file path. Please read the documentation.
+</div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Another way to solve all the above problems are <b>hashing</b>. We can convert a word into fixed index number using the hash function. so, there will be no training process to get the vocabulary and no need to save the vocab. It was implemented in sklearn with <code>HashingVectorizer</code>. In <code>HashingVectorizer</code>, you have to mention number of features you need, by default it takes  $2^{20}$. below you can see some code to use <code>HashingVectorizer</code>.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#importing the hashvectorizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">HashingVectorizer</span>
+<span class="c1">#instanciating the HashingVectorizer</span>
+<span class="n">hash_vectorizer</span> <span class="o">=</span> <span class="n">HashingVectorizer</span><span class="p">(</span><span class="n">n_features</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">alternate_sign</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1">#transforming the data, No need to fit the data because, it is stateless</span>
+<span class="n">hash_vector</span> <span class="o">=</span> <span class="n">hash_vectorizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">sample_documents</span><span class="p">)</span>
+<span class="c1">#printing the output</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Hash vectors --&gt;"</span><span class="p">,</span><span class="n">hash_vector</span><span class="o">.</span><span class="n">toarray</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Hash vectors --&gt; [[0. 1. 3. 1. 0.]
+ [0. 1. 5. 1. 0.]
+ [0. 0. 3. 0. 0.]]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p></p>
+<div class="flash">
+    <svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewbox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg>
+    <strong>Note: </strong>You can normalize your vectors using norm. Since the hash function might cause collisions between (unrelated) features, a signed hash function is used and the sign of the hash value determines the sign of the value stored in the output matrix for a feature. This way, collisions are likely to cancel out rather than accumulate error, and the expected mean of any output feature’s value is zero. This mechanism is enabled by default with <code>alternate_sign=True</code> and is particularly useful for small hash table sizes (<code>n_features &lt; 10000</code>).
+</div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can convert above vector to <code>TFIDF</code> using <code>TfidfTransformer</code>. check the below code</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#instanciate the class</span>
+<span class="n">vec_idftrans</span> <span class="o">=</span> <span class="n">TfidfTransformer</span><span class="p">()</span>
+<span class="c1">#fit with the hash BOW sparse data </span>
+<span class="n">vec_idftrans</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">hash_vector</span><span class="p">)</span>
+<span class="c1">##transforming the data</span>
+<span class="n">vec_tfidf2</span> <span class="o">=</span> <span class="n">vec_idftrans</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">hash_vector</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"tfidf using hash BOW --&gt;"</span><span class="p">,</span><span class="n">vec_tfidf2</span><span class="o">.</span><span class="n">toarray</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>tfidf using hash BOW --&gt; [[0.         0.36691832 0.85483442 0.36691832 0.        ]
+ [0.         0.2419863  0.93961974 0.2419863  0.        ]
+ [0.         0.         1.         0.         0.        ]]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This vectorizer is memory efficient but there are some cons for this as well, some of them are</p>
+<ul>
+<li>There is no way to compute the inverse transform of the Hashing so there will be no interpretability of the model. </li>
+<li>There can be collisions in the hashing. </li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>References:</p>
+<ol>
+<li>
+<a href="https://scikit-learn.org/stable/">https://scikit-learn.org/stable/</a> </li>
+</ol>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="UdiBhaskar/practical-ml"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/practical-ml/nlp/feature%20extraction/bow/tfidf/hashing%20vectorizer/2020/03/13/Basic-feature-Extraction.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/practical-ml/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/practical-ml/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/practical-ml/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>A Machine Learning blog.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/UdiBhaskar" title="UdiBhaskar"><svg class="svg-icon grey"><use xlink:href="/practical-ml/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
