@@ -3,30 +3,36 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Practical Machine Learning | A Machine Learning blog.</title>
+<title>Hypothesis Testing | Practical Machine Learning</title>
 <meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="Practical Machine Learning" />
+<meta property="og:title" content="Hypothesis Testing" />
+<meta name="author" content="Uday Paila" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="A Machine Learning blog." />
-<meta property="og:description" content="A Machine Learning blog." />
-<link rel="canonical" href="https://udibhaskar.github.io/practical-ml/" />
-<meta property="og:url" content="https://udibhaskar.github.io/practical-ml/" />
+<meta name="description" content="Hypothesis testing using permutation" />
+<meta property="og:description" content="Hypothesis testing using permutation" />
+<link rel="canonical" href="https://udibhaskar.github.io/practical-ml/probability/2020/06/15/Hypothesis-Testing-Copy1.html" />
+<meta property="og:url" content="https://udibhaskar.github.io/practical-ml/probability/2020/06/15/Hypothesis-Testing-Copy1.html" />
 <meta property="og:site_name" content="Practical Machine Learning" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-06-15T00:00:00-05:00" />
 <script type="application/ld+json">
-{"description":"A Machine Learning blog.","@type":"WebSite","url":"https://udibhaskar.github.io/practical-ml/","name":"Practical Machine Learning","headline":"Practical Machine Learning","@context":"https://schema.org"}</script>
+{"author":{"@type":"Person","name":"Uday Paila"},"description":"Hypothesis testing using permutation","mainEntityOfPage":{"@type":"WebPage","@id":"https://udibhaskar.github.io/practical-ml/probability/2020/06/15/Hypothesis-Testing-Copy1.html"},"@type":"BlogPosting","url":"https://udibhaskar.github.io/practical-ml/probability/2020/06/15/Hypothesis-Testing-Copy1.html","headline":"Hypothesis Testing","dateModified":"2020-06-15T00:00:00-05:00","datePublished":"2020-06-15T00:00:00-05:00","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/practical-ml/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://udibhaskar.github.io/practical-ml/feed.xml" title="Practical Machine Learning" /><link rel="shortcut icon" type="image/x-icon" href="/practical-ml/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Practical Machine Learning | A Machine Learning blog.</title>
+<title>Hypothesis Testing | Practical Machine Learning</title>
 <meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="Practical Machine Learning" />
+<meta property="og:title" content="Hypothesis Testing" />
+<meta name="author" content="Uday Paila" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="A Machine Learning blog." />
-<meta property="og:description" content="A Machine Learning blog." />
-<link rel="canonical" href="https://udibhaskar.github.io/practical-ml/" />
-<meta property="og:url" content="https://udibhaskar.github.io/practical-ml/" />
+<meta name="description" content="Hypothesis testing using permutation" />
+<meta property="og:description" content="Hypothesis testing using permutation" />
+<link rel="canonical" href="https://udibhaskar.github.io/practical-ml/probability/2020/06/15/Hypothesis-Testing-Copy1.html" />
+<meta property="og:url" content="https://udibhaskar.github.io/practical-ml/probability/2020/06/15/Hypothesis-Testing-Copy1.html" />
 <meta property="og:site_name" content="Practical Machine Learning" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-06-15T00:00:00-05:00" />
 <script type="application/ld+json">
-{"description":"A Machine Learning blog.","@type":"WebSite","url":"https://udibhaskar.github.io/practical-ml/","name":"Practical Machine Learning","headline":"Practical Machine Learning","@context":"https://schema.org"}</script>
+{"author":{"@type":"Person","name":"Uday Paila"},"description":"Hypothesis testing using permutation","mainEntityOfPage":{"@type":"WebPage","@id":"https://udibhaskar.github.io/practical-ml/probability/2020/06/15/Hypothesis-Testing-Copy1.html"},"@type":"BlogPosting","url":"https://udibhaskar.github.io/practical-ml/probability/2020/06/15/Hypothesis-Testing-Copy1.html","headline":"Hypothesis Testing","dateModified":"2020-06-15T00:00:00-05:00","datePublished":"2020-06-15T00:00:00-05:00","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
@@ -94,58 +100,79 @@ window.onload = wrap_img;
 </header>
 <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <div class="home"><h1 id="posts">Posts</h1>
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Hypothesis Testing</h1><p class="page-description">Hypothesis testing using permutation</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-06-15T00:00:00-05:00" itemprop="datePublished">
+        Jun 15, 2020
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Uday Paila</span></span>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      1 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/practical-ml/categories/#probability">probability</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          
+          
+          
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2020-06-15-Hypothesis-Testing-Copy1.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>testing the upload</p>
+
+</div>
+</div>
+</div>
+</div>
 
 
 
-  
-
-  <!-- Hide posts if front matter flag hide:true -->
-  
-  
-
-  <!-- Sort posts by rank, then date -->
-  
-  
-  
-
- 
-  
-
-   <!-- Assemble final sorted posts array -->
-  
-  <ul class="post-list"><li><div class="Box box-shadow-medium rounded-1 col-12"><div class="col-8 d-table-cell p-3">
-        <h3>
-          <a class="post-link" href="/practical-ml/probability/2020/06/15/Hypothesis-Testing-Copy1.html">
-            Hypothesis Testing
-          </a>
-        </h3>
-        <p class="post-meta-description">Hypothesis testing using permutation</p>
-          <p class="post-meta">Jun 15, 2020</p>
-      </div>
-  </div></li><li><div class="Box box-shadow-medium rounded-1 col-12"><div class="col-4 d-table-cell p-3 v-align-middle">
-        <img class="image-preview " src="https://biguru.files.wordpress.com/2015/01/introduction-to-statistical-inference.jpg" />
-      </div><div class="col-8 d-table-cell p-3">
-        <h3>
-          <a class="post-link" href="/practical-ml/clt/sampling/z-distribution/t-distribution/ci/confidence%20interval/bootstrapping/2020/06/07/Foundations-to-inference-Stats.html">
-            Foundations to inference Statistics
-          </a>
-        </h3>
-        <p class="post-meta-description">Basics of inference statistics, sampling distributions, Bootstrapping, Confidence Intervals</p>
-          <p class="post-meta">Jun 7, 2020</p>
-      </div>
-  </div></li><li><div class="Box box-shadow-medium rounded-1 col-12"><div class="col-8 d-table-cell p-3">
-        <h3>
-          <a class="post-link" href="/practical-ml/probability/distribution/bernoulli/binomial/normal/poission/geometric/lognormal/2020/06/05/Distributions.html">
-            Probability Distributions and use cases
-          </a>
-        </h3>
-        <p class="post-meta-description">Introduction to probability distributions with use cases.</p>
-          <p class="post-meta">Jun 5, 2020</p>
-      </div>
-  </div></li></ul>
-
-    </div>
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="UdiBhaskar/practical-ml"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/practical-ml/probability/2020/06/15/Hypothesis-Testing-Copy1.html" hidden></a>
+</article>
       </div>
     </main><footer class="site-footer h-card">
   <data class="u-url" href="/practical-ml/"></data>
