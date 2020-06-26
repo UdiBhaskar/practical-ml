@@ -158,37 +158,37 @@ window.onload = wrap_img;
     <ul class="section-nav">
 <li class="toc-entry toc-h1"><a href="#Discrete-distributions">Discrete distributions </a>
 <ul>
-<li class="toc-entry toc-h2"><a href="#Bernoulli-distribution:">Bernoulli distribution: </a></li>
-<li class="toc-entry toc-h2"><a href="#Binomial-Distribution:">Binomial Distribution: </a>
+<li class="toc-entry toc-h2"><a href="#Bernoulli-distribution">Bernoulli distribution </a></li>
+<li class="toc-entry toc-h2"><a href="#Binomial-Distribution">Binomial Distribution </a>
 <ul>
-<li class="toc-entry toc-h4"><a href="#Usecase-1:">Usecase-1: </a></li>
-<li class="toc-entry toc-h4"><a href="#Usecase-2:">Usecase-2: </a></li>
-<li class="toc-entry toc-h4"><a href="#Usecase-3:">Usecase-3: </a></li>
+<li class="toc-entry toc-h4"><a href="#Usecase-1">Usecase-1 </a></li>
+<li class="toc-entry toc-h4"><a href="#Usecase-2">Usecase-2 </a></li>
+<li class="toc-entry toc-h4"><a href="#Usecase-3">Usecase-3 </a></li>
 </ul>
 </li>
-<li class="toc-entry toc-h2"><a href="#Poisson-Distribution:">Poisson Distribution: </a>
+<li class="toc-entry toc-h2"><a href="#Poisson-Distribution">Poisson Distribution </a>
 <ul>
-<li class="toc-entry toc-h4"><a href="#Usecase-1:">Usecase-1: </a></li>
+<li class="toc-entry toc-h4"><a href="#Usecase-1">Usecase-1 </a></li>
 </ul>
 </li>
-<li class="toc-entry toc-h2"><a href="#Geometric-Distribution:">Geometric Distribution: </a>
+<li class="toc-entry toc-h2"><a href="#Geometric-Distribution">Geometric Distribution </a>
 <ul>
-<li class="toc-entry toc-h4"><a href="#Use-Case-1:">Use Case-1: </a></li>
-<li class="toc-entry toc-h4"><a href="#Use-Case-2:">Use Case-2: </a></li>
+<li class="toc-entry toc-h4"><a href="#Use-Case-1">Use Case-1 </a></li>
+<li class="toc-entry toc-h4"><a href="#Use-Case-2">Use Case-2 </a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc-entry toc-h1"><a href="#Continuous-distributions">Continuous distributions </a>
 <ul>
-<li class="toc-entry toc-h2"><a href="#Normal-distribution:">Normal distribution: </a></li>
-<li class="toc-entry toc-h2"><a href="#Exponential-distribution:">Exponential distribution: </a>
+<li class="toc-entry toc-h2"><a href="#Normal-distribution">Normal distribution </a></li>
+<li class="toc-entry toc-h2"><a href="#Exponential-distribution">Exponential distribution </a>
 <ul>
-<li class="toc-entry toc-h4"><a href="#Use-case-1:">Use case-1: </a></li>
-<li class="toc-entry toc-h4"><a href="#Use-case-2:">Use case-2: </a></li>
+<li class="toc-entry toc-h4"><a href="#Use-case-1">Use case-1 </a></li>
+<li class="toc-entry toc-h4"><a href="#Use-case-2">Use case-2 </a></li>
 </ul>
 </li>
-<li class="toc-entry toc-h2"><a href="#Log-Normal:">Log Normal: </a></li>
+<li class="toc-entry toc-h2"><a href="#Log-Normal">Log Normal </a></li>
 </ul>
 </li>
 </ul><!--
@@ -241,19 +241,17 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Bernoulli-distribution:">
-<a class="anchor" href="#Bernoulli-distribution:" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bernoulli distribution:<a class="anchor-link" href="#Bernoulli-distribution:"> </a>
+<h2 id="Bernoulli-distribution">
+<a class="anchor" href="#Bernoulli-distribution" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bernoulli distribution<a class="anchor-link" href="#Bernoulli-distribution"> </a>
 </h2>
 <p>A Bernoulli random variable has exactly two possible outcomes. We typically label one of these outcomes a "success" and the other outcome a "failure". We may also denote a success by 1 and a failure by 0.</p>
 <p>The flip of a coin is modeled well by a Bernoulli distribution, as it is a single trial with a fixed nonzero probability of success (even if that probability is difficult to pin down if the coin is unfair).
 </p>
 <div class="flash">
     <svg class="octicon octicon-info octicon octicon-info octicon octicon-info" viewbox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg>
-    <strong>Note: </strong><code>Probability of success = p</code>  
+    <strong>Note: </strong>Probability of success = p, mean = p, Var = p(1-p)
 </div>
-<code>mean = p</code><br>
-<code>Var = p(1-p)</code>
-<p>We can silumate using <code>np.random.random()</code></p>
+We can silumate using <code>np.random.random()</code>
 
 </div>
 </div>
@@ -279,8 +277,8 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Binomial-Distribution:">
-<a class="anchor" href="#Binomial-Distribution:" aria-hidden="true"><span class="octicon octicon-link"></span></a>Binomial Distribution:<a class="anchor-link" href="#Binomial-Distribution:"> </a>
+<h2 id="Binomial-Distribution">
+<a class="anchor" href="#Binomial-Distribution" aria-hidden="true"><span class="octicon octicon-link"></span></a>Binomial Distribution<a class="anchor-link" href="#Binomial-Distribution"> </a>
 </h2>
 <p>The binomial distribution describes a sequence of identical, independent Bernoulli trials. That is, each trial has <b>the same probability of success</b>, and <b>the results of one trial do not affect any of the following trials</b>.</p>
 <p>let <code>Probability of success = p</code></p>
@@ -289,15 +287,14 @@ window.onload = wrap_img;
     \end{align}<p></p>
 <div class="flash">
     <svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewbox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg>
-    <strong>Note: </strong><code>mean = np</code>  
+    <strong>Note: </strong>mean = np, Var = np(1-p)
 </div>
-<code>Var = np(1-p)</code>
-<p>From above formual, we can tell given a 20 coin flips, what is the probability of getting 7 heads if getting a head is having probability of 0.35.<br>
+From above formual, we can tell given a 20 coin flips, what is the probability of getting 7 heads if getting a head is having probability of 0.35.<br>
     n = 20<br>
     k = 7<br>
     p = 0.35<br>
     Then,<br>
-    P(7) = 0.18440118638</p>
+    P(7) = 0.18440118638
 <p>We can simulate using <code>np.random.binomial</code></p>
 
 </div>
@@ -451,11 +448,12 @@ probability 0.179
 <div class="flash flash-error">
     <svg class="octicon octicon-alert octicon octicon-alert" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 000 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 00.01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"></path></svg>
     <strong>Warning: </strong>To check binomial distribution, It has to satisfy below conditions
-</div>    - The trials are independent.
-
-<pre><code>- The number of trials is fixed(n).
-- Each trial outcome is classified as a success or failure.
-- The probability of success(p) is the same for each trial.</code></pre>
+</div>- The trials are independent.
+<ul>
+<li>The number of trials is fixed(n).</li>
+<li>Each trial outcome is classified as a success or failure.</li>
+<li>The probability of success(p) is the same for each trial.</li>
+</ul>
 
 </div>
 </div>
@@ -463,8 +461,8 @@ probability 0.179
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Usecase-1:">
-<a class="anchor" href="#Usecase-1:" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usecase-1:<a class="anchor-link" href="#Usecase-1:"> </a>
+<h4 id="Usecase-1">
+<a class="anchor" href="#Usecase-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usecase-1<a class="anchor-link" href="#Usecase-1"> </a>
 </h4>
 <ol>
 <li>Let's take you are working in a food delivery company. Based on previous deliveries, the probability of delivering the wrong item is 0.0085. Per day, company delivers average of 1500 items. Loss per one wrong delivery is 100rs. Calculate the maximum loss we may get?</li>
@@ -661,14 +659,14 @@ probability 0.179
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Usecase-2:">
-<a class="anchor" href="#Usecase-2:" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usecase-2:<a class="anchor-link" href="#Usecase-2:"> </a>
+<h4 id="Usecase-2">
+<a class="anchor" href="#Usecase-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usecase-2<a class="anchor-link" href="#Usecase-2"> </a>
 </h4>
 <ol>
 <li>Let's take you are working in a Manufacturing company. Based on previous data,  3% of items produced are defective. If we produce 5000 items a day, what is probabability to get a 4500 non defective items. or analyze the how many days it may needed to get 5 million non defective items? </li>
 </ol>
-<h4 id="Usecase-3:">
-<a class="anchor" href="#Usecase-3:" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usecase-3:<a class="anchor-link" href="#Usecase-3:"> </a>
+<h4 id="Usecase-3">
+<a class="anchor" href="#Usecase-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usecase-3<a class="anchor-link" href="#Usecase-3"> </a>
 </h4>
 <ol>
 <li>Let's consider you are working in a tele-marketing company. Probability of converting a lead to sale is 6.5%, No of lead calls is 100 per day.. If you want to increase the revenue by some 10%, how many calls we have to make or how much conversion rate we need? How many employees we can recruit to increase the no of calls? </li>
@@ -680,8 +678,8 @@ probability 0.179
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Poisson-Distribution:">
-<a class="anchor" href="#Poisson-Distribution:" aria-hidden="true"><span class="octicon octicon-link"></span></a>Poisson Distribution:<a class="anchor-link" href="#Poisson-Distribution:"> </a>
+<h2 id="Poisson-Distribution">
+<a class="anchor" href="#Poisson-Distribution" aria-hidden="true"><span class="octicon octicon-link"></span></a>Poisson Distribution<a class="anchor-link" href="#Poisson-Distribution"> </a>
 </h2>
 <p>The Poisson distribution is often useful for estimating the number of events in a large population over a unit of time.</p>
 <p>Let's say, we have to calculate how many hits we will get to my website hourly. let's say probability of hit is 0.2 per hour.</p>
@@ -692,11 +690,10 @@ P(k) = \frac{e^{-\lambda}\lambda^{k}} {k!}
 \end{align}<p></p>
 <div class="flash">
     <svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewbox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg>
-    <strong>Note: </strong><code>mean = Lambda</code>  
+    <strong>Note: </strong>mean = Lambda, Var = Lambda
 </div>
-<code>Var = Lambda</code>
-<h4 id="Usecase-1:">
-<a class="anchor" href="#Usecase-1:" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usecase-1:<a class="anchor-link" href="#Usecase-1:"> </a>
+<h4 id="Usecase-1">
+<a class="anchor" href="#Usecase-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usecase-1<a class="anchor-link" href="#Usecase-1"> </a>
 </h4>
 <ol>
 <li>Let's take you are working in E-Learning company. Based on previous data, on average comapany getting 7 queries per hour. What is the probability that getting 12 queries or more in the next hour. </li>
@@ -805,23 +802,23 @@ P(k) = \frac{e^{-\lambda}\lambda^{k}} {k!}
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Geometric-Distribution:">
-<a class="anchor" href="#Geometric-Distribution:" aria-hidden="true"><span class="octicon octicon-link"></span></a>Geometric Distribution:<a class="anchor-link" href="#Geometric-Distribution:"> </a>
+<h2 id="Geometric-Distribution">
+<a class="anchor" href="#Geometric-Distribution" aria-hidden="true"><span class="octicon octicon-link"></span></a>Geometric Distribution<a class="anchor-link" href="#Geometric-Distribution"> </a>
 </h2>
-<p>The geometric distribution represents the number of failures before the first success in a sequence of Bernoulli trials. 
-let <code>Probability of success = p</code></p>
+<p>The geometric distribution represents the number of failures before the first success in a sequence of Bernoulli trials.</p>
+<p>let <code>Probability of success = p</code></p>
 \begin{align}
   \text{Probability of having exactly k failures before the first success} = P(k) = (1-p)^{k}p \\
     \end{align}<p></p>
 <p>We can simulate it using <code>np.random.geometric</code></p>
-<h4 id="Use-Case-1:">
-<a class="anchor" href="#Use-Case-1:" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use Case-1:<a class="anchor-link" href="#Use-Case-1:"> </a>
+<h4 id="Use-Case-1">
+<a class="anchor" href="#Use-Case-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use Case-1<a class="anchor-link" href="#Use-Case-1"> </a>
 </h4>
 <ol>
 <li>A programmer has a 90% chance of finding a bug every time he compiles his code, and it takes him two hours to rewrite his code every time he discovers a bug. What is the probability that he will finish his program by the end of his workday? Assume that a workday is 8 hours and that the programmer compiles his code immediately at the beginning of the day.</li>
 </ol>
-<h4 id="Use-Case-2:">
-<a class="anchor" href="#Use-Case-2:" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use Case-2:<a class="anchor-link" href="#Use-Case-2:"> </a>
+<h4 id="Use-Case-2">
+<a class="anchor" href="#Use-Case-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use Case-2<a class="anchor-link" href="#Use-Case-2"> </a>
 </h4>
 <p>2.. In cost-benefit analyses, such as a company deciding whether to fund research trials that, if successful, will earn the company some estimated profit, the goal is to reach a success before the cost outweighs the potential gain.</p>
 
@@ -840,8 +837,8 @@ let <code>Probability of success = p</code></p>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Normal-distribution:">
-<a class="anchor" href="#Normal-distribution:" aria-hidden="true"><span class="octicon octicon-link"></span></a>Normal distribution:<a class="anchor-link" href="#Normal-distribution:"> </a>
+<h2 id="Normal-distribution">
+<a class="anchor" href="#Normal-distribution" aria-hidden="true"><span class="octicon octicon-link"></span></a>Normal distribution<a class="anchor-link" href="#Normal-distribution"> </a>
 </h2>
 <p>The normal distribution is described by two parameters μ and σ, representing the mean and standard deviation of the random variable X respectively.</p>
 <p>\begin{align}
@@ -918,7 +915,7 @@ let <code>Probability of success = p</code></p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>68-95-99.7 rule
-<img src="https://blogs.sas.com/content/iml/files/2019/07/rule6895.png" alt="'title'"></p>
+<img src="https://blogs.sas.com/content/iml/files/2019/07/rule6895.png" alt="'title'" title="Credit:https://blogs.sas.com/content/iml/files/2019/07/rule6895.png"></p>
 
 </div>
 </div>
@@ -926,8 +923,8 @@ let <code>Probability of success = p</code></p>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Exponential-distribution:">
-<a class="anchor" href="#Exponential-distribution:" aria-hidden="true"><span class="octicon octicon-link"></span></a>Exponential distribution:<a class="anchor-link" href="#Exponential-distribution:"> </a>
+<h2 id="Exponential-distribution">
+<a class="anchor" href="#Exponential-distribution" aria-hidden="true"><span class="octicon octicon-link"></span></a>Exponential distribution<a class="anchor-link" href="#Exponential-distribution"> </a>
 </h2>
 <p>To predict the amount of waiting time until the next event (i.e., success, failure, arrival, etc.). You can thik similar to poission distribution. In poission distribution, we can predict how many events occur in a unit of time. In Exponential distribution, amout of time needed to event occur. 
 If the number of events per unit time follows a Poisson distribution, then the amount of time between events follows the exponential distribution.</p>
@@ -937,15 +934,11 @@ If the number of events per unit time follows a Poisson distribution, then the a
 </p>
 <div class="flash flash-error">
     <svg class="octicon octicon-alert octicon octicon-alert octicon octicon-alert" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 000 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 00.01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"></path></svg>
-    <strong>Warning: </strong>X ~ Exp(0.3) is to remember that 0.3 is not a time duration, but it is an event rate, which is the same as the parameter λ in a Poisson process.
+    <strong>Warning: </strong>X ~ Exp(0.3) is to remember that 0.3 is not a time duration, but it is an event rate, which is the same as the parameter λ in a Poisson process. When rate changes, it won’t work. rate has to be constant
 </div>
-We can simulate it using <code>np.random.exponential</code>
-<div class="flash flash-error">
-    <svg class="octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 000 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 00.01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"></path></svg>
-    <strong>Warning: </strong>When rate changes, it won’t work. rate has to be constant
-</div>
-<h4 id="Use-case-1:">
-<a class="anchor" href="#Use-case-1:" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use case-1:<a class="anchor-link" href="#Use-case-1:"> </a>
+<p>We can simulate it using <code>np.random.exponential</code></p>
+<h4 id="Use-case-1">
+<a class="anchor" href="#Use-case-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use case-1<a class="anchor-link" href="#Use-case-1"> </a>
 </h4>
 <ol>
 <li>At a call center, calls come in every 20 minutes on average. What is the approximate probability that no calls will come in for a 30 minute period?</li>
@@ -1054,8 +1047,8 @@ We can simulate it using <code>np.random.exponential</code>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Use-case-2:">
-<a class="anchor" href="#Use-case-2:" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use case-2:<a class="anchor-link" href="#Use-case-2:"> </a>
+<h4 id="Use-case-2">
+<a class="anchor" href="#Use-case-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use case-2<a class="anchor-link" href="#Use-case-2"> </a>
 </h4>
 <ol>
 <li>A computer repair customer service takes an average of 3 days repair. How long (approximately, in days) should customer has to wait to pickup repaired product with 95% confidance?</li>
@@ -1162,8 +1155,8 @@ We can simulate it using <code>np.random.exponential</code>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Log-Normal:">
-<a class="anchor" href="#Log-Normal:" aria-hidden="true"><span class="octicon octicon-link"></span></a>Log Normal:<a class="anchor-link" href="#Log-Normal:"> </a>
+<h2 id="Log-Normal">
+<a class="anchor" href="#Log-Normal" aria-hidden="true"><span class="octicon octicon-link"></span></a>Log Normal<a class="anchor-link" href="#Log-Normal"> </a>
 </h2>
 <p>it describes a random variable whose logarithm is normally distributed.</p>
 
