@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Basics of Natural Language Processing | Practical Machine Learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Basics of Natural Language Processing" />
+<meta name="author" content="Uday Paila" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Natural language processing basics and pipeline" />
+<meta property="og:description" content="Natural language processing basics and pipeline" />
+<link rel="canonical" href="https://udibhaskar.github.io/practical-ml/nlp/basics/pipeline/text%20cleaning/tokenization/2020/03/10/Basics-of-language-processing.html" />
+<meta property="og:url" content="https://udibhaskar.github.io/practical-ml/nlp/basics/pipeline/text%20cleaning/tokenization/2020/03/10/Basics-of-language-processing.html" />
+<meta property="og:site_name" content="Practical Machine Learning" />
+<meta property="og:image" content="https://i.imgur.com/xVLZ7Uk.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-03-10T00:00:00-05:00" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Uday Paila"},"description":"Natural language processing basics and pipeline","mainEntityOfPage":{"@type":"WebPage","@id":"https://udibhaskar.github.io/practical-ml/nlp/basics/pipeline/text%20cleaning/tokenization/2020/03/10/Basics-of-language-processing.html"},"@type":"BlogPosting","url":"https://udibhaskar.github.io/practical-ml/nlp/basics/pipeline/text%20cleaning/tokenization/2020/03/10/Basics-of-language-processing.html","headline":"Basics of Natural Language Processing","dateModified":"2020-03-10T00:00:00-05:00","datePublished":"2020-03-10T00:00:00-05:00","image":"https://i.imgur.com/xVLZ7Uk.png","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/practical-ml/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://udibhaskar.github.io/practical-ml/feed.xml" title="Practical Machine Learning" /><link rel="shortcut icon" type="image/x-icon" href="/practical-ml/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Basics of Natural Language Processing | Practical Machine Learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Basics of Natural Language Processing" />
+<meta name="author" content="Uday Paila" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Natural language processing basics and pipeline" />
+<meta property="og:description" content="Natural language processing basics and pipeline" />
+<link rel="canonical" href="https://udibhaskar.github.io/practical-ml/nlp/basics/pipeline/text%20cleaning/tokenization/2020/03/10/Basics-of-language-processing.html" />
+<meta property="og:url" content="https://udibhaskar.github.io/practical-ml/nlp/basics/pipeline/text%20cleaning/tokenization/2020/03/10/Basics-of-language-processing.html" />
+<meta property="og:site_name" content="Practical Machine Learning" />
+<meta property="og:image" content="https://i.imgur.com/xVLZ7Uk.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-03-10T00:00:00-05:00" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Uday Paila"},"description":"Natural language processing basics and pipeline","mainEntityOfPage":{"@type":"WebPage","@id":"https://udibhaskar.github.io/practical-ml/nlp/basics/pipeline/text%20cleaning/tokenization/2020/03/10/Basics-of-language-processing.html"},"@type":"BlogPosting","url":"https://udibhaskar.github.io/practical-ml/nlp/basics/pipeline/text%20cleaning/tokenization/2020/03/10/Basics-of-language-processing.html","headline":"Basics of Natural Language Processing","dateModified":"2020-03-10T00:00:00-05:00","datePublished":"2020-03-10T00:00:00-05:00","image":"https://i.imgur.com/xVLZ7Uk.png","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://udibhaskar.github.io/practical-ml/feed.xml" title="Practical Machine Learning" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head><body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/practical-ml/">Practical Machine Learning</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/practical-ml/about/">About Me</a><a class="page-link" href="/practical-ml/search/">Search</a><a class="page-link" href="/practical-ml/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Basics of Natural Language Processing</h1><p class="page-description">Natural language processing basics and pipeline</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-03-10T00:00:00-05:00" itemprop="datePublished">
+        Mar 10, 2020
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Uday Paila</span></span>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      7 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/practical-ml/categories/#NLP">NLP</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/practical-ml/categories/#Basics">Basics</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/practical-ml/categories/#pipeline">pipeline</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/practical-ml/categories/#text cleaning">text cleaning</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/practical-ml/categories/#Tokenization">Tokenization</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          
+          
+          
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#Lexical-Analysis">Lexical Analysis </a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#Tokenization">Tokenization </a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#White-Space-Tokenizer">White Space Tokenizer </a></li>
+<li class="toc-entry toc-h4"><a href="#NLTK-Word-Tokenizer">NLTK Word Tokenizer </a></li>
+<li class="toc-entry toc-h4"><a href="#NLTK-Regex-Tokenizer">NLTK Regex Tokenizer </a></li>
+<li class="toc-entry toc-h4"><a href="#spaCy-Tokenizer">spaCy Tokenizer </a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#Morphological-Analysis">Morphological Analysis </a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#Lemmatization">Lemmatization </a></li>
+<li class="toc-entry toc-h3"><a href="#Stemming">Stemming </a></li>
+<li class="toc-entry toc-h3"><a href="#Stop-Words">Stop Words </a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#NLP-pipeline">NLP pipeline </a>
+<ul>
+<li class="toc-entry toc-h4"><a href="#Text-Preprocessing">Text Preprocessing </a></li>
+</ul>
+</li>
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2020-03-10-Basics-of-language-processing.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In any language, below are some language analysis categories.  I will try to write basic processing using spaCy and NLTK.</p>
+<p><br></p>
+<p><img src="https://i.imgur.com/SrpkOud.png" alt="Basics of NLP"></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Lexical-Analysis">
+<a class="anchor" href="#Lexical-Analysis" aria-hidden="true"><span class="octicon octicon-link"></span></a>Lexical Analysis<a class="anchor-link" href="#Lexical-Analysis"> </a>
+</h2>
+<p>Lexical analysis is the task of segmenting text into its lexical expressions i.e. words/tokens.</p>
+<p><br></p>
+<h3 id="Tokenization">
+<a class="anchor" href="#Tokenization" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tokenization<a class="anchor-link" href="#Tokenization"> </a>
+</h3>
+<p>Converting sentence into tokens/words called as <code>tokenization</code>. There are many ways to do this. I will discuss some of them below.  I am also creating 3 sentences as below</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">demo_sent1</span> <span class="o">=</span> <span class="s2">"@uday can't wait for the #nlp notes YAAAAAAY!!! #deeplearning https://udibhaskar.github.io/practical-ml/"</span>
+<span class="n">demo_sent2</span> <span class="o">=</span> <span class="s2">"That U.S.A. poster-print costs $12.40..."</span>
+<span class="n">demo_sent3</span> <span class="o">=</span> <span class="s2">"I am writing NLP basics."</span>
+<span class="n">all_sents</span> <span class="o">=</span> <span class="p">[</span><span class="n">demo_sent1</span><span class="p">,</span> <span class="n">demo_sent2</span><span class="p">,</span> <span class="n">demo_sent3</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">all_sents</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>["@uday can't wait for the #nlp notes YAAAAAAY!!! #deeplearning https://udibhaskar.github.io/practical-ml/", 'That U.S.A. poster-print costs $12.40...', 'I am writing NLP basics.']
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="White-Space-Tokenizer">
+<a class="anchor" href="#White-Space-Tokenizer" aria-hidden="true"><span class="octicon octicon-link"></span></a>White Space Tokenizer<a class="anchor-link" href="#White-Space-Tokenizer"> </a>
+</h4>
+<p>We can tokenize the data by splitting the data at space. check the code below</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">sent</span> <span class="ow">in</span> <span class="n">all_sents</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">sent</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">' '</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>['@uday', "can't", 'wait', 'for', 'the', '#nlp', 'notes', 'YAAAAAAY!!!', '#deeplearning', 'https://udibhaskar.github.io/practical-ml/']
+['That', 'U.S.A.', 'poster-print', 'costs', '$12.40...']
+['I', 'am', 'writing', 'NLP', 'basics.']
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For some of the words, it is working perfectly like <code>U.S.A.</code>, <code>poster-printer</code> but we are getting <code>@uday</code>, <code>basics.</code>, <code>$12.40...</code>, <code>#nlp</code> as words but we have to remove those <code>#</code>,<code>@</code>,<code>.</code> etc... So this tokenizer may give bad results if we have words like this.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="NLTK-Word-Tokenizer">
+<a class="anchor" href="#NLTK-Word-Tokenizer" aria-hidden="true"><span class="octicon octicon-link"></span></a>NLTK Word Tokenizer<a class="anchor-link" href="#NLTK-Word-Tokenizer"> </a>
+</h4>
+<p>It follows the conventions of the <code>Penn Treebank</code>.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">nltk.tokenize</span> <span class="kn">import</span> <span class="n">word_tokenize</span>
+<span class="k">for</span> <span class="n">sent</span> <span class="ow">in</span> <span class="n">all_sents</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">word_tokenize</span><span class="p">(</span><span class="n">sent</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>['@', 'uday', 'ca', "n't", 'wait', 'for', 'the', '#', 'nlp', 'notes', 'YAAAAAAY', '!', '!', '!', '#', 'deeplearning', 'https', ':', '//udibhaskar.github.io/practical-ml/']
+['That', 'U.S.A.', 'poster-print', 'costs', '$', '12.40', '...']
+['I', 'am', 'writing', 'NLP', 'basics', '.']
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>It is giving better results compared to the white space tokenizer but some words like <code>can't</code> and <code>web addresses</code> are not working fine.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="NLTK-Regex-Tokenizer">
+<a class="anchor" href="#NLTK-Regex-Tokenizer" aria-hidden="true"><span class="octicon octicon-link"></span></a>NLTK Regex Tokenizer<a class="anchor-link" href="#NLTK-Regex-Tokenizer"> </a>
+</h4>
+<p>We can write our own regex to split the sentence into tokens/words.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">'''(?x)     # set flag to allow verbose regexps</span>
+<span class="s1">...     (?:[A-Z]\.)+       # abbreviations, </span>
+<span class="s1">...   | \w+(?:-\w+)*       # words with optional internal hyphens</span>
+<span class="s1">...   | \$?\d+(?:\.\d+)?%? # currency and percentages, </span>
+<span class="s1">...   | \.\.\.             # ellipsis</span>
+<span class="s1">...   | [][.,;"'?():-_`]   # these are separate tokens; includes ], [</span>
+<span class="s1"> '''</span>
+<span class="k">for</span> <span class="n">sent</span> <span class="ow">in</span> <span class="n">all_sents</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">nltk</span><span class="o">.</span><span class="n">regexp_tokenize</span><span class="p">(</span><span class="n">sent</span><span class="p">,</span> <span class="n">pattern</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>['@', 'uday', 'can', "'", 't', 'wait', 'for', 'the', 'nlp', 'notes', 'YAAAAAAY', 'deeplearning', 'https', ':', 'udibhaskar', '.', 'github', '.', 'io', 'practical-ml']
+['That', 'U.S.A.', 'poster-print', 'costs', '$12.40', '...']
+['I', 'am', 'writing', 'NLP', 'basics', '.']
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p></p>
+<div class="flash">
+    <svg class="octicon octicon-info octicon octicon-info" viewbox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg>
+    <strong>Note: </strong>There are many more NLTK tokenizers. You can refer to all of them in <a href="https://www.nltk.org/api/nltk.tokenize.html">this</a> link.
+</div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="spaCy-Tokenizer">
+<a class="anchor" href="#spaCy-Tokenizer" aria-hidden="true"><span class="octicon octicon-link"></span></a>spaCy Tokenizer<a class="anchor-link" href="#spaCy-Tokenizer"> </a>
+</h4>
+<p>Works on predefined regular expression rules for prefix_search, suffix_search, infix_finditer, token_match, and also Dependency Parsing to find sentence boundaries.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">spacy</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">##loading spaCy english module</span>
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"en_core_web_sm"</span><span class="p">)</span>
+<span class="c1">#printing</span>
+<span class="k">for</span> <span class="n">sent</span> <span class="ow">in</span> <span class="n">all_sents</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">([</span><span class="n">token</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">nlp</span><span class="p">(</span><span class="n">sent</span><span class="p">)])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>['@uday', 'ca', "n't", 'wait', 'for', 'the', '#', 'nlp', 'notes', 'YAAAAAAY', '!', '!', '!', '#', 'deeplearning', 'https://udibhaskar.github.io/practical-ml/']
+['That', 'U.S.A.', 'poster', '-', 'print', 'costs', '$', '12.40', '...']
+['I', 'am', 'writing', 'NLP', 'basics', '.']
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>There are some tokenizers like <code>SentencePiece</code> that can learn how to <code>tokenize</code> form corpus of the data. I will discuss this in another blog.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p></p>
+<div class="flash flash-error">
+    <svg class="octicon octicon-alert" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 000 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 00.01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"></path></svg>
+    <strong>Warning: </strong>Our analysis and model performance also depends on the <code>Tokenization</code> algorithm so be careful while choosing the tokenization algorithm. If possible try with two or more algorithms or try to write custom rules based on your dataset/task.
+</div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Morphological-Analysis">
+<a class="anchor" href="#Morphological-Analysis" aria-hidden="true"><span class="octicon octicon-link"></span></a>Morphological Analysis<a class="anchor-link" href="#Morphological-Analysis"> </a>
+</h2>
+<p>In linguistics, morphology is the study of the internal structure of words. I will try to explain some of them below.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Lemmatization">
+<a class="anchor" href="#Lemmatization" aria-hidden="true"><span class="octicon octicon-link"></span></a>Lemmatization<a class="anchor-link" href="#Lemmatization"> </a>
+</h3>
+<p>Using morphological analysis to return the dictionary form of a word i.e. the entry in a dictionary you would find all forms under.  In Lemmatization root word is called Lemma.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">nltk.stem</span> <span class="kn">import</span> <span class="n">WordNetLemmatizer</span>
+
+<span class="n">lemmatizer</span> <span class="o">=</span> <span class="n">WordNetLemmatizer</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lemmatizer</span><span class="o">.</span><span class="n">lemmatize</span><span class="p">(</span><span class="s1">'running'</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lemmatizer</span><span class="o">.</span><span class="n">lemmatize</span><span class="p">(</span><span class="s1">'runner'</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lemmatizer</span><span class="o">.</span><span class="n">lemmatize</span><span class="p">(</span><span class="s1">'runners'</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>running
+runner
+runner
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Stemming">
+<a class="anchor" href="#Stemming" aria-hidden="true"><span class="octicon octicon-link"></span></a>Stemming<a class="anchor-link" href="#Stemming"> </a>
+</h3>
+<p>Stemming is the process of producing morphological variants of a root/base word.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">nltk.stem</span> <span class="kn">import</span> <span class="n">PorterStemmer</span>
+<span class="n">stemmer</span> <span class="o">=</span> <span class="n">PorterStemmer</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">stemmer</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="s1">'running'</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">stemmer</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="s1">'runner'</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">stemmer</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="s1">'runners'</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>run
+runner
+runner
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I will try to explain some other pre-processing techniques like <code>POS tagging</code>, <code>Dependency Parsing</code> while doing deep learning.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Stop-Words">
+<a class="anchor" href="#Stop-Words" aria-hidden="true"><span class="octicon octicon-link"></span></a>Stop Words<a class="anchor-link" href="#Stop-Words"> </a>
+</h3>
+<p>stop words usually refers to the most common words in a language, there is no single universal list of stop words used by all natural language processing tools, and indeed not all tools even use such a list. We  can remove the stop words if you don't need exact meaning of a sentence. For text classification, we don't need those most of the time but, we need those for question and answer systems. word <code>not</code> is also a stop word in <code>NLTK</code> and this may be useful while classifying positive/negative sentence so be careful while removing the <code>stopwords</code>. You can get the stop words from <code>NLTK</code> as below.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">stopwords</span>
+<span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s1">'english'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="NLP-pipeline">
+<a class="anchor" href="#NLP-pipeline" aria-hidden="true"><span class="octicon octicon-link"></span></a>NLP pipeline<a class="anchor-link" href="#NLP-pipeline"> </a>
+</h2>
+<p><img src="https://i.imgur.com/VQ6FYoF.png" alt="nlp pipeline"></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Text-Preprocessing">
+<a class="anchor" href="#Text-Preprocessing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Text Preprocessing<a class="anchor-link" href="#Text-Preprocessing"> </a>
+</h4>
+<p>You may get data from PDF files, speech, OCR, Docs, Web so you have to preprocess the data to get the better raw text. I would recommend you to read <a href="https://www.kdnuggets.com/2018/03/text-data-preprocessing-walkthrough-python.html">this</a> blog.</p>
+<p><br></p>
+<p><img src="https://i.imgur.com/xVLZ7Uk.png" alt="text processing"></p>
+<p><br>
+Once you are done with basic cleaning, I would suggest do everything with <code>spaCy</code>. It is very easy to write the total pipeline. I took the <code>IMDB</code> dataset and written a pipeline to clean the data and get the tokens/words from the data. Before going to that, please check the below notebook that explains spaCy.</p>
+<p><br></p>
+<p>I have written a class <code>TextPreprocess</code> which takes a raw text and gives tokens which will be given to the ML/DL algorithm. It will be very useful while deploying the algorithm in production if we write a clear pipeline like below. Writing this may take several days of analysis on the real-life text data. Once you have done with total analysis, please try to write a structured function/class which takes raw data and gives data that will be fed to the algorithm or another preprocessing pipeline.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">## Check below link to know more about pipeline</span>
+<span class="k">class</span> <span class="nc">TextPreprocess</span><span class="p">():</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">##loading nlp object of spacy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"en_core_web_lg"</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[</span><span class="s2">"tagger"</span><span class="p">,</span> <span class="s2">"parser"</span><span class="p">])</span>
+        <span class="c1"># adding it to nlp object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">merge_entities_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nlp</span><span class="o">.</span><span class="n">create_pipe</span><span class="p">(</span><span class="s2">"merge_entities"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nlp</span><span class="o">.</span><span class="n">add_pipe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">merge_entities_</span><span class="p">)</span>
+        
+        <span class="c1">##removing not, neitherm never from stopwords,</span>
+        <span class="c1">##you can check all the spaCy stopwords from https://github.com/explosion/spaCy/blob/master/spacy/lang/en/stop_words.py</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nlp</span><span class="o">.</span><span class="n">vocab</span><span class="p">[</span><span class="s2">"not"</span><span class="p">]</span><span class="o">.</span><span class="n">is_stop</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nlp</span><span class="o">.</span><span class="n">vocab</span><span class="p">[</span><span class="s1">'neither'</span><span class="p">]</span><span class="o">.</span><span class="n">is_stop</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nlp</span><span class="o">.</span><span class="n">vocab</span><span class="p">[</span><span class="s1">'never'</span><span class="p">]</span><span class="o">.</span><span class="n">is_stop</span> <span class="o">=</span> <span class="kc">False</span>
+        
+    <span class="k">def</span> <span class="nf">clean_raw_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">remove_html</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">clean_dots</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">clean_quotes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+               <span class="n">clean_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">convert_lowercase</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">"""</span>
+<span class="sd">        Clean the text data.</span>
+<span class="sd">        text: input raw text data</span>
+<span class="sd">        remove_html: if True, it removes the HTML tags and gives the only text data. </span>
+<span class="sd">        clean_dots: cleans all type of dots to fixed one</span>
+<span class="sd">        clean_quotes: changes all type of quotes to fixed type like "</span>
+<span class="sd">        clean_whitespaces: removes 2 or more white spaces</span>
+<span class="sd">        convert_lowercase: converts text to lower case</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="n">remove_html</span><span class="p">:</span>
+            <span class="c1"># remove HTML</span>
+            <span class="c1">##separator=' ' to replace tags with space. othewise, we are getting some unwanted type like</span>
+            <span class="c1">## "make these characters come alive.&lt;br /&gt;&lt;br /&gt;We wish" --&gt; make these characters come alive.We wish (no space between sentences)</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s1">'html.parser'</span><span class="p">)</span><span class="o">.</span><span class="n">get_text</span><span class="p">(</span><span class="n">separator</span><span class="o">=</span><span class="s1">' '</span><span class="p">)</span>  
+            
+        <span class="c1"># https://github.com/blendle/research-summarization/blob/master/enrichers/cleaner.py#L29</span>
+        <span class="k">if</span> <span class="n">clean_dots</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">'…'</span><span class="p">,</span> <span class="s1">'...'</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">clean_quotes</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">'[`‘’‛⸂⸃⸌⸍⸜⸝]'</span><span class="p">,</span> <span class="s2">"'"</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">'[„“]|(</span><span class="se">\'\'</span><span class="s1">)|(,,)'</span><span class="p">,</span> <span class="s1">'"'</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">'[-_]'</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">clean_whitespace</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">'\s+'</span><span class="p">,</span> <span class="s1">' '</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">convert_lowercase</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">text</span>
+    
+    <span class="k">def</span> <span class="nf">get_token_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">get_spacy_tokens</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">'''</span>
+<span class="sd">        gives the list of spacy tokens/word strings</span>
+<span class="sd">        text: cleaned text</span>
+<span class="sd">        get_spacy_tokens: if true, it returns the list of spacy token objects</span>
+<span class="sd">                          else, returns tokens in string format</span>
+<span class="sd">        '''</span>
+        <span class="c1">##nlp object</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">out_tokens</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">ent_type_</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">is_punct</span> <span class="ow">or</span> <span class="n">token</span><span class="o">.</span><span class="n">is_stop</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">get_spacy_tokens</span><span class="p">:</span>
+                        <span class="n">out_tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">out_tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">norm_</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out_tokens</span>
+    
+    <span class="k">def</span> <span class="nf">get_preprocessed_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">remove_html</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">clean_dots</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">clean_quotes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+               <span class="n">clean_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">convert_lowercase</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">get_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">get_spacy_tokens</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">get_string</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">"""</span>
+<span class="sd">        returns the cleaned text</span>
+<span class="sd">        text: input raw text data</span>
+<span class="sd">        remove_html: if True, it removes the HTML tags and gives the only text data. </span>
+<span class="sd">        clean_dots: cleans all type of dots to fixed one</span>
+<span class="sd">        clean_quotes: changes all type of quotes to fixed type like "</span>
+<span class="sd">        clean_whitespaces: removes 2 or more white spaces</span>
+<span class="sd">        convert_lowercase: converts text to lower case</span>
+<span class="sd">        get_tokens: if true, returns output after tokenization else after cleaning only.</span>
+<span class="sd">        get_spacy_tokens: if true, it returns the list of spacy token objects</span>
+<span class="sd">                          else, returns tokens in string format</span>
+<span class="sd">        get_string: returns string output(combining all tokens by space separation) only if get_spacy_tokens=False</span>
+<span class="sd">        """</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clean_raw_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">remove_html</span><span class="p">,</span> <span class="n">clean_dots</span><span class="p">,</span> <span class="n">clean_quotes</span><span class="p">,</span> <span class="n">clean_whitespace</span><span class="p">,</span> <span class="n">convert_lowercase</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">get_tokens</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_token_list</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">get_spacy_tokens</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">get_string</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">get_spacy_tokens</span><span class="p">)):</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">text</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="UdiBhaskar/practical-ml"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/practical-ml/nlp/basics/pipeline/text%20cleaning/tokenization/2020/03/10/Basics-of-language-processing.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/practical-ml/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/practical-ml/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/practical-ml/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>A Machine Learning blog.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/UdiBhaskar" title="UdiBhaskar"><svg class="svg-icon grey"><use xlink:href="/practical-ml/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
