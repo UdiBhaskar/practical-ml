@@ -10,13 +10,13 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Introduction to probability distributions with use cases." />
 <meta property="og:description" content="Introduction to probability distributions with use cases." />
-<link rel="canonical" href="https://udibhaskar.github.io/practical-ml/probability/distribution/bernoulli/ninomial/normal/poission/deometric/lognormal/2020/06/05/Distributions.html" />
-<meta property="og:url" content="https://udibhaskar.github.io/practical-ml/probability/distribution/bernoulli/ninomial/normal/poission/deometric/lognormal/2020/06/05/Distributions.html" />
+<link rel="canonical" href="https://udibhaskar.github.io/practical-ml/probability/distribution/bernoulli/binomial/normal/poission/deometric/lognormal/2020/06/05/Distributions.html" />
+<meta property="og:url" content="https://udibhaskar.github.io/practical-ml/probability/distribution/bernoulli/binomial/normal/poission/deometric/lognormal/2020/06/05/Distributions.html" />
 <meta property="og:site_name" content="Practical Machine Learning" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-06-05T00:00:00-05:00" />
 <script type="application/ld+json">
-{"author":{"@type":"Person","name":"Uday Paila"},"description":"Introduction to probability distributions with use cases.","@type":"BlogPosting","headline":"How to use Probability Distributions","dateModified":"2020-06-05T00:00:00-05:00","datePublished":"2020-06-05T00:00:00-05:00","url":"https://udibhaskar.github.io/practical-ml/probability/distribution/bernoulli/ninomial/normal/poission/deometric/lognormal/2020/06/05/Distributions.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://udibhaskar.github.io/practical-ml/probability/distribution/bernoulli/ninomial/normal/poission/deometric/lognormal/2020/06/05/Distributions.html"},"@context":"https://schema.org"}</script>
+{"author":{"@type":"Person","name":"Uday Paila"},"description":"Introduction to probability distributions with use cases.","@type":"BlogPosting","headline":"How to use Probability Distributions","dateModified":"2020-06-05T00:00:00-05:00","datePublished":"2020-06-05T00:00:00-05:00","url":"https://udibhaskar.github.io/practical-ml/probability/distribution/bernoulli/binomial/normal/poission/deometric/lognormal/2020/06/05/Distributions.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://udibhaskar.github.io/practical-ml/probability/distribution/bernoulli/binomial/normal/poission/deometric/lognormal/2020/06/05/Distributions.html"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/practical-ml/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://udibhaskar.github.io/practical-ml/feed.xml" title="Practical Machine Learning" /><link rel="shortcut icon" type="image/x-icon" href="/practical-ml/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>How to use Probability Distributions | Practical Machine Learning</title>
@@ -26,13 +26,13 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Introduction to probability distributions with use cases." />
 <meta property="og:description" content="Introduction to probability distributions with use cases." />
-<link rel="canonical" href="https://udibhaskar.github.io/practical-ml/probability/distribution/bernoulli/ninomial/normal/poission/deometric/lognormal/2020/06/05/Distributions.html" />
-<meta property="og:url" content="https://udibhaskar.github.io/practical-ml/probability/distribution/bernoulli/ninomial/normal/poission/deometric/lognormal/2020/06/05/Distributions.html" />
+<link rel="canonical" href="https://udibhaskar.github.io/practical-ml/probability/distribution/bernoulli/binomial/normal/poission/deometric/lognormal/2020/06/05/Distributions.html" />
+<meta property="og:url" content="https://udibhaskar.github.io/practical-ml/probability/distribution/bernoulli/binomial/normal/poission/deometric/lognormal/2020/06/05/Distributions.html" />
 <meta property="og:site_name" content="Practical Machine Learning" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-06-05T00:00:00-05:00" />
 <script type="application/ld+json">
-{"author":{"@type":"Person","name":"Uday Paila"},"description":"Introduction to probability distributions with use cases.","@type":"BlogPosting","headline":"How to use Probability Distributions","dateModified":"2020-06-05T00:00:00-05:00","datePublished":"2020-06-05T00:00:00-05:00","url":"https://udibhaskar.github.io/practical-ml/probability/distribution/bernoulli/ninomial/normal/poission/deometric/lognormal/2020/06/05/Distributions.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://udibhaskar.github.io/practical-ml/probability/distribution/bernoulli/ninomial/normal/poission/deometric/lognormal/2020/06/05/Distributions.html"},"@context":"https://schema.org"}</script>
+{"author":{"@type":"Person","name":"Uday Paila"},"description":"Introduction to probability distributions with use cases.","@type":"BlogPosting","headline":"How to use Probability Distributions","dateModified":"2020-06-05T00:00:00-05:00","datePublished":"2020-06-05T00:00:00-05:00","url":"https://udibhaskar.github.io/practical-ml/probability/distribution/bernoulli/binomial/normal/poission/deometric/lognormal/2020/06/05/Distributions.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://udibhaskar.github.io/practical-ml/probability/distribution/bernoulli/binomial/normal/poission/deometric/lognormal/2020/06/05/Distributions.html"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
@@ -127,7 +127,7 @@ window.onload = wrap_img;
         <a class="category-tags-link" href="/practical-ml/categories/#bernoulli">bernoulli</a>
         &nbsp;
       
-        <a class="category-tags-link" href="/practical-ml/categories/#ninomial">ninomial</a>
+        <a class="category-tags-link" href="/practical-ml/categories/#binomial">binomial</a>
         &nbsp;
       
         <a class="category-tags-link" href="/practical-ml/categories/#normal">normal</a>
@@ -284,17 +284,19 @@ We can silumate using <code>np.random.random()</code>
 <p>let <code>Probability of success = p</code></p>
 \begin{align}
   \text{Probability of k success in n trails} = P(k) &amp;=\binom{n}{k} p^k (1-p)^{n-k} \\
-    \end{align}<p></p>
+    \end{align}<p><br>&lt;/br&gt;
+</p>
 <div class="flash">
     <svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewbox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg>
     <strong>Note: </strong>mean = np, Var = np(1-p)
 </div>
-From above formual, we can tell given a 20 coin flips, what is the probability of getting 7 heads if getting a head is having probability of 0.35.<br>
+<p><br>&lt;/br&gt;</p>
+<p>From above formual, we can tell given a 20 coin flips, what is the probability of getting 7 heads if getting a head is having probability of 0.35.<br>
     n = 20<br>
     k = 7<br>
     p = 0.35<br>
     Then,<br>
-    P(7) = 0.18440118638
+    P(7) = 0.18440118638</p>
 <p>We can simulate using <code>np.random.binomial</code></p>
 
 </div>
@@ -447,13 +449,11 @@ probability 0.179
 <p></p>
 <div class="flash flash-error">
     <svg class="octicon octicon-alert octicon octicon-alert" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 000 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 00.01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"></path></svg>
-    <strong>Warning: </strong>To check binomial distribution, It has to satisfy below conditions
-</div>- The trials are independent.
-<ul>
-<li>The number of trials is fixed(n).</li>
-<li>Each trial outcome is classified as a success or failure.</li>
-<li>The probability of success(p) is the same for each trial.</li>
-</ul>
+    <strong>Warning: </strong>To check binomial distribution, It has to satisfy below conditions   
+</div>- The trials are independent.<br>
+- The number of trials is fixed(n).<br>
+- Each trial outcome is classified as a success or failure.<br>
+- The probability of success(p) is the same for each trial.
 
 </div>
 </div>
@@ -687,11 +687,13 @@ probability 0.179
 <p>The Poisson Distribution, doesn’t require you to know n or p. We are assuming n is infinitely large and p is infinitesimal. The only parameter of the Poisson distribution is the rate λ (the expected value of x).</p>
 \begin{align}
 P(k) = \frac{e^{-\lambda}\lambda^{k}} {k!} 
-\end{align}<p></p>
+\end{align}<p><br>&lt;/br&gt;
+</p>
 <div class="flash">
     <svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewbox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg>
     <strong>Note: </strong>mean = Lambda, Var = Lambda
 </div>
+<br>&lt;/br&gt;
 <h4 id="Usecase-1">
 <a class="anchor" href="#Usecase-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usecase-1<a class="anchor-link" href="#Usecase-1"> </a>
 </h4>
@@ -806,10 +808,13 @@ P(k) = \frac{e^{-\lambda}\lambda^{k}} {k!}
 <a class="anchor" href="#Geometric-Distribution" aria-hidden="true"><span class="octicon octicon-link"></span></a>Geometric Distribution<a class="anchor-link" href="#Geometric-Distribution"> </a>
 </h2>
 <p>The geometric distribution represents the number of failures before the first success in a sequence of Bernoulli trials.</p>
+<p><br>&lt;/br&gt;</p>
 <p>let <code>Probability of success = p</code></p>
+<p><br>&lt;/br&gt;</p>
 \begin{align}
   \text{Probability of having exactly k failures before the first success} = P(k) = (1-p)^{k}p \\
     \end{align}<p></p>
+<p><br>&lt;/br&gt;</p>
 <p>We can simulate it using <code>np.random.geometric</code></p>
 <h4 id="Use-Case-1">
 <a class="anchor" href="#Use-Case-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use Case-1<a class="anchor-link" href="#Use-Case-1"> </a>
@@ -841,9 +846,11 @@ P(k) = \frac{e^{-\lambda}\lambda^{k}} {k!}
 <a class="anchor" href="#Normal-distribution" aria-hidden="true"><span class="octicon octicon-link"></span></a>Normal distribution<a class="anchor-link" href="#Normal-distribution"> </a>
 </h2>
 <p>The normal distribution is described by two parameters μ and σ, representing the mean and standard deviation of the random variable X respectively.</p>
+<p><br>&lt;/br&gt;</p>
 <p>\begin{align}
   \text{Probability Density Fn} = f(x) &amp;= \dfrac{1}{\sqrt{2\pi} \sigma} e^{-\dfrac{(x-\mu)^2}{2 \sigma^2}} \\
     \end{align}</p>
+<p><br>&lt;/br&gt;</p>
 <p>We can simulate it using <code>np.random.normal</code></p>
 
 </div>
@@ -914,7 +921,9 @@ P(k) = \frac{e^{-\lambda}\lambda^{k}} {k!}
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p><br>&lt;/br&gt;</p>
 <p>68-95-99.7 rule
+<br>&lt;/br&gt;
 <img src="https://blogs.sas.com/content/iml/files/2019/07/rule6895.png" alt="'title'" title="Credit:https://blogs.sas.com/content/iml/files/2019/07/rule6895.png"></p>
 
 </div>
@@ -928,14 +937,17 @@ P(k) = \frac{e^{-\lambda}\lambda^{k}} {k!}
 </h2>
 <p>To predict the amount of waiting time until the next event (i.e., success, failure, arrival, etc.). You can thik similar to poission distribution. In poission distribution, we can predict how many events occur in a unit of time. In Exponential distribution, amout of time needed to event occur. 
 If the number of events per unit time follows a Poisson distribution, then the amount of time between events follows the exponential distribution.</p>
+<p><br>&lt;/br&gt;</p>
 <p>\begin{align}
   \text{Probability Density Fn} = f(x) &amp;= \lambda e^{-\lambda k} \\
-    \end{align}
+    \end{align}</p>
+<p><br>&lt;/br&gt;
 </p>
 <div class="flash flash-error">
     <svg class="octicon octicon-alert octicon octicon-alert octicon octicon-alert" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 000 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 00.01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"></path></svg>
     <strong>Warning: </strong>X ~ Exp(0.3) is to remember that 0.3 is not a time duration, but it is an event rate, which is the same as the parameter λ in a Poisson process. When rate changes, it won’t work. rate has to be constant
 </div>
+<p><br>&lt;/br&gt;</p>
 <p>We can simulate it using <code>np.random.exponential</code></p>
 <h4 id="Use-case-1">
 <a class="anchor" href="#Use-case-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use case-1<a class="anchor-link" href="#Use-case-1"> </a>
@@ -1175,7 +1187,7 @@ If the number of events per unit time follows a Poisson distribution, then the a
         theme="github-light"
         crossorigin="anonymous"
         async>
-</script><a class="u-url" href="/practical-ml/probability/distribution/bernoulli/ninomial/normal/poission/deometric/lognormal/2020/06/05/Distributions.html" hidden></a>
+</script><a class="u-url" href="/practical-ml/probability/distribution/bernoulli/binomial/normal/poission/deometric/lognormal/2020/06/05/Distributions.html" hidden></a>
 </article>
       </div>
     </main><footer class="site-footer h-card">
