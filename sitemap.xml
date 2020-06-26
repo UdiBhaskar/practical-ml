@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>https://udibhaskar.github.io/practical-ml/debugging%20nn/neural%20network/overfit/underfit/2020/02/03/Effective_Training_and_Debugging_of_a_Neural_Networks.html</loc>
+<lastmod>2020-02-03T00:00:00-06:00</lastmod>
+</url>
+<url>
 <loc>https://udibhaskar.github.io/practical-ml/probability/distribution/bernoulli/binomial/normal/poission/geometric/lognormal/2020/06/05/Distributions.html</loc>
 <lastmod>2020-06-05T00:00:00-05:00</lastmod>
 </url>

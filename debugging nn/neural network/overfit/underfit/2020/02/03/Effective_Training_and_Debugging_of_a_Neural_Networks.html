@@ -1,0 +1,1846 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Effective Training and Debugging of a Neural Networks | Practical Machine Learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Effective Training and Debugging of a Neural Networks" />
+<meta name="author" content="Uday Paila" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Proper training and debugging of a neural network" />
+<meta property="og:description" content="Proper training and debugging of a neural network" />
+<link rel="canonical" href="https://udibhaskar.github.io/practical-ml/debugging%20nn/neural%20network/overfit/underfit/2020/02/03/Effective_Training_and_Debugging_of_a_Neural_Networks.html" />
+<meta property="og:url" content="https://udibhaskar.github.io/practical-ml/debugging%20nn/neural%20network/overfit/underfit/2020/02/03/Effective_Training_and_Debugging_of_a_Neural_Networks.html" />
+<meta property="og:site_name" content="Practical Machine Learning" />
+<meta property="og:image" content="https://media.geeksforgeeks.org/wp-content/uploads/20190902105053/Debugging-Tips-To-Get-Better-At-It.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-02-03T00:00:00-06:00" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Uday Paila"},"description":"Proper training and debugging of a neural network","mainEntityOfPage":{"@type":"WebPage","@id":"https://udibhaskar.github.io/practical-ml/debugging%20nn/neural%20network/overfit/underfit/2020/02/03/Effective_Training_and_Debugging_of_a_Neural_Networks.html"},"@type":"BlogPosting","url":"https://udibhaskar.github.io/practical-ml/debugging%20nn/neural%20network/overfit/underfit/2020/02/03/Effective_Training_and_Debugging_of_a_Neural_Networks.html","headline":"Effective Training and Debugging of a Neural Networks","dateModified":"2020-02-03T00:00:00-06:00","datePublished":"2020-02-03T00:00:00-06:00","image":"https://media.geeksforgeeks.org/wp-content/uploads/20190902105053/Debugging-Tips-To-Get-Better-At-It.png","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/practical-ml/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://udibhaskar.github.io/practical-ml/feed.xml" title="Practical Machine Learning" /><link rel="shortcut icon" type="image/x-icon" href="/practical-ml/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Effective Training and Debugging of a Neural Networks | Practical Machine Learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Effective Training and Debugging of a Neural Networks" />
+<meta name="author" content="Uday Paila" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Proper training and debugging of a neural network" />
+<meta property="og:description" content="Proper training and debugging of a neural network" />
+<link rel="canonical" href="https://udibhaskar.github.io/practical-ml/debugging%20nn/neural%20network/overfit/underfit/2020/02/03/Effective_Training_and_Debugging_of_a_Neural_Networks.html" />
+<meta property="og:url" content="https://udibhaskar.github.io/practical-ml/debugging%20nn/neural%20network/overfit/underfit/2020/02/03/Effective_Training_and_Debugging_of_a_Neural_Networks.html" />
+<meta property="og:site_name" content="Practical Machine Learning" />
+<meta property="og:image" content="https://media.geeksforgeeks.org/wp-content/uploads/20190902105053/Debugging-Tips-To-Get-Better-At-It.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-02-03T00:00:00-06:00" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Uday Paila"},"description":"Proper training and debugging of a neural network","mainEntityOfPage":{"@type":"WebPage","@id":"https://udibhaskar.github.io/practical-ml/debugging%20nn/neural%20network/overfit/underfit/2020/02/03/Effective_Training_and_Debugging_of_a_Neural_Networks.html"},"@type":"BlogPosting","url":"https://udibhaskar.github.io/practical-ml/debugging%20nn/neural%20network/overfit/underfit/2020/02/03/Effective_Training_and_Debugging_of_a_Neural_Networks.html","headline":"Effective Training and Debugging of a Neural Networks","dateModified":"2020-02-03T00:00:00-06:00","datePublished":"2020-02-03T00:00:00-06:00","image":"https://media.geeksforgeeks.org/wp-content/uploads/20190902105053/Debugging-Tips-To-Get-Better-At-It.png","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://udibhaskar.github.io/practical-ml/feed.xml" title="Practical Machine Learning" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head><body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/practical-ml/">Practical Machine Learning</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/practical-ml/about/">About Me</a><a class="page-link" href="/practical-ml/search/">Search</a><a class="page-link" href="/practical-ml/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Effective Training and Debugging of a Neural Networks</h1><p class="page-description">Proper training and debugging of a neural network</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-02-03T00:00:00-06:00" itemprop="datePublished">
+        Feb 3, 2020
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Uday Paila</span></span>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      25 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/practical-ml/categories/#Debugging NN">Debugging NN</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/practical-ml/categories/#Neural Network">Neural Network</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/practical-ml/categories/#overfit">overfit</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/practical-ml/categories/#underfit">underfit</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          
+          
+          
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#Data-Processing">Data Processing </a></li>
+<li class="toc-entry toc-h2"><a href="#Creating-a-Neural-Network">Creating a Neural Network </a></li>
+<li class="toc-entry toc-h2"><a href="#Training-a-NN">Training a NN </a></li>
+<li class="toc-entry toc-h2"><a href="#Debugging-and-Enhancing-NN">Debugging and Enhancing NN </a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#Check-whether-forward-propagation-is-correct-or-not">Check whether forward propagation is correct or not </a></li>
+<li class="toc-entry toc-h3"><a href="#What-to-do-when-Loss-Explodes">What to do when Loss Explodes </a></li>
+<li class="toc-entry toc-h3"><a href="#What-to-do-when-loss-Increases</b>">What to do when loss Increases&lt;/b&gt; </a></li>
+<li class="toc-entry toc-h3"><a href="#What-to-do-when-loss-Oscillate</b>">What to do when loss Oscillate&lt;/b&gt; </a></li>
+<li class="toc-entry toc-h3"><a href="#What-to-do-when-loss-is-constant">What to do when loss is constant </a></li>
+<li class="toc-entry toc-h3"><a href="#What-if-we-get-memory-Errors">What if we get memory Errors </a></li>
+<li class="toc-entry toc-h3"><a href="#What-if-we-Underfit-to-the-data">What if we Underfit to the data </a></li>
+<li class="toc-entry toc-h3"><a href="#What-if-we-Overfit-to-the-data">What if we Overfit to the data </a></li>
+</ul>
+</li>
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2020-02-03-Effective_Training_and_Debugging_of_a_Neural_Networks.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In this blog, I want to discuss Training and Debugging of a NN in a practical manner.</p>
+<p>I am taking a cyber troll dataset. It is a classification data with labels aggressive or not. This is mostly inspired from <a href="http://karpathy.github.io/2019/04/25/recipe/">this</a> blog.</p>
+<p>Whenever I train any neural network, I will divide that into subtasks as below. I am assuming, you already set your project goals and evaluation metrics.</p>
+<ol>
+<li>If you don't have proper data, create/collect proper data.</li>
+<li>Data preprocessing, EDA and creating structured data.</li>
+<li>Writing a basic Model. </li>
+<li>Training and debugging with very small data. Try to overfit to the very small training data(we will get to know basic errors and rectify it). </li>
+<li>Writing a better data pipeline to train the NN with total data. </li>
+<li>Train the model with Total data and Tune the model parameters. (While training, we may face some issues and you have to rectify those)</li>
+<li>Compare the model with the SOTA/any other real-time systems and try to improve the model by changing the basic model or training a new model. so you have to go to step-3 again with a new model. </li>
+<li>Compare the results and do the error analysis. I personally feel, based on error analysis, we can improve the model so much. It is similar to the active learning concept. </li>
+<li>If you feel data is the issue, go to step-1 and check again.</li>
+</ol>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">##basic imports</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">random</span> <span class="k">as</span> <span class="nn">rn</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.layers</span> <span class="kn">import</span> <span class="n">LSTM</span><span class="p">,</span> <span class="n">GRU</span><span class="p">,</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Embedding</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.models</span> <span class="kn">import</span> <span class="n">Model</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Data-Processing">
+<a class="anchor" href="#Data-Processing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Data Processing<a class="anchor-link" href="#Data-Processing"> </a>
+</h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">##reading the data</span>
+<span class="n">cyber_troll_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="s1">'Dataset for Detection of Cyber-Trolls.json'</span><span class="p">,</span> <span class="n">lines</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">cyber_troll_data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>content</th>
+      <th>annotation</th>
+      <th>extras</th>
+      <th>metadata</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Get fucking real dude.</td>
+      <td>{'notes': '', 'label': ['1']}</td>
+      <td>NaN</td>
+      <td>{'first_done_at': 1527503426000, 'last_updated...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>She is as dirty as they come  and that crook R...</td>
+      <td>{'notes': '', 'label': ['1']}</td>
+      <td>NaN</td>
+      <td>{'first_done_at': 1527503426000, 'last_updated...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#basic preprocessing</span>
+<span class="n">cyber_troll_data</span><span class="p">[</span><span class="s1">'label'</span><span class="p">]</span><span class="o">=</span><span class="n">cyber_troll_data</span><span class="o">.</span><span class="n">annotation</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s1">'label'</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+<span class="n">cyber_troll_data</span> <span class="o">=</span> <span class="n">cyber_troll_data</span><span class="p">[[</span><span class="s1">'content'</span><span class="p">,</span> <span class="s1">'label'</span><span class="p">]]</span>
+<span class="n">cyber_troll_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>content</th>
+      <th>label</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Get fucking real dude.</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>She is as dirty as they come  and that crook R...</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>why did you fuck it up. I could do it all day ...</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Dude they dont finish enclosing the fucking sh...</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>WTF are you talking about Men? No men thats no...</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#its a imbalance one</span>
+<span class="n">cyber_troll_data</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>0    12179
+1     7822
+Name: label, dtype: int64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">##splitting data into train, validation and Test data. </span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">cyber_troll_data</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">cyber_troll_data</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> 
+                                                    <span class="n">test_size</span><span class="o">=</span><span class="mf">0.40</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">cyber_troll_data</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">54</span><span class="p">)</span>
+
+<span class="n">X_test</span><span class="p">,</span> <span class="n">X_val</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">y_val</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> 
+                                                    <span class="n">test_size</span><span class="o">=</span><span class="mf">0.50</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">y_test</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+
+
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">Tokenizer</span><span class="p">()</span>
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">fit_on_texts</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+
+
+<span class="n">X_train_tokens</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">X_test_tokens</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">X_val_tokens</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">X_val</span><span class="p">)</span>
+
+
+<span class="n">number_vocab</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">word_index</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+
+<span class="n">X_train_pad_tokens</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">sequence</span><span class="o">.</span><span class="n">pad_sequences</span><span class="p">(</span><span class="n">X_train_tokens</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">'post'</span><span class="p">,</span> <span class="n">truncating</span><span class="o">=</span><span class="s1">'post'</span><span class="p">)</span>
+<span class="n">X_test_pad_tokens</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">sequence</span><span class="o">.</span><span class="n">pad_sequences</span><span class="p">(</span><span class="n">X_test_tokens</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">'post'</span><span class="p">,</span> <span class="n">truncating</span><span class="o">=</span><span class="s1">'post'</span><span class="p">)</span>
+<span class="n">X_val_pad_tokens</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">sequence</span><span class="o">.</span><span class="n">pad_sequences</span><span class="p">(</span><span class="n">X_val_tokens</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">'post'</span><span class="p">,</span> <span class="n">truncating</span><span class="o">=</span><span class="s1">'post'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We prepared the data. I am not doing perfect preprocessing and tokenization. You can do preprocessing in a better way.</p>
+<p>We have,<br>
+<code>X_train_pad_tokens, y_train  --&gt; To train  
+X_val_pad_tokens, y_val   --&gt; To validate and Tune  
+X_test_pad_tokens, y_test  --&gt; Don't use this data while trainig. Only use this after you are done with all the modelling.</code></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I am creating Training and Validation datasets to iterate over those using the tf.data pipeline. Please use less data as of now because, it will be easier to debug and easier to know about the error if we have any in our network, I will discuss this below. I am only using the first 100 data points with a batch size of 32.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">##Creating the dataset( only 100 data points and will explain why after trainig process.) </span>
+<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">((</span><span class="n">X_train_pad_tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">100</span><span class="p">],</span> <span class="n">y_train</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">100</span><span class="p">]))</span>
+<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">train_dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="n">drop_remainder</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">train_dataset</span><span class="o">.</span><span class="n">prefetch</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">AUTOTUNE</span><span class="p">)</span>
+
+<span class="c1">##creating test dataset using tf.data</span>
+<span class="n">val_dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">((</span><span class="n">X_val_pad_tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">100</span><span class="p">],</span> <span class="n">y_val</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">100</span><span class="p">]))</span>
+<span class="n">val_dataset</span> <span class="o">=</span> <span class="n">val_dataset</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="n">drop_remainder</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">val_dataset</span> <span class="o">=</span> <span class="n">val_dataset</span><span class="o">.</span><span class="n">prefetch</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">AUTOTUNE</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><br></p>
+<p>Checking the data pairing issue and check the data given to neural network is correct or not. If it got corrupted, check/debug the data pipleline and rectify it. If you have images, try to plot the images and check.</p>
+<p>below, i have written a basic for loop to print. You can also print the words corresponding to the numbers and check.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">input_text</span><span class="p">,</span> <span class="n">output_label</span> <span class="ow">in</span> <span class="n">train_dataset</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">input_text</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">output_label</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+    <span class="k">break</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>tf.Tensor(
+[[ 186   89  741    5  385   43   11  127  919 1082  157    1    9  251
+     5  628    3 6970    5   11 4641   30    6   40]
+ [  27    3   26   28 1021   29    6    0    0    0    0    0    0    0
+     0    0    0    0    0    0    0    0    0    0]
+ [4647   72  606   43   16  684  223    1    9    3 4648  923    0    0
+     0    0    0    0    0    0    0    0    0    0]], shape=(3, 24), dtype=int32) tf.Tensor([0 1 1], shape=(3,), dtype=int32)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Creating-a-Neural-Network">
+<a class="anchor" href="#Creating-a-Neural-Network" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating a Neural Network<a class="anchor-link" href="#Creating-a-Neural-Network"> </a>
+</h2>
+<p>Some of the rules to follow while writing/training your Neural Network.</p>
+<ul>
+<li>Start with a simple architecture - We are doing a text classification so, we can try a single layer LSTM. </li>
+<li>Use well studied default parameters like activation = relu, optimizer = adam, initialization = he for relu and Glorot for sigmoid/tanh. To know more about this, please read <a href="https://www.deeplearning.ai/ai-notes/initialization/">this</a> blog.</li>
+<li>Fix the random seeds so that we can reproduce the initializations/results to tune our models. - You have to fix all the random seeds in your model.</li>
+<li>Normalize the input data. </li>
+</ul>
+<p>I am writing a simple LSTM model by following all the above rules.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">##LSTM</span>
+
+<span class="c1">##fixing numpy RS</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1">##fixing tensorflow RS</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">set_seed</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+
+<span class="c1">##python RS</span>
+<span class="n">rn</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+
+
+<span class="c1">##model</span>
+<span class="k">def</span> <span class="nf">get_model</span><span class="p">():</span>
+    <span class="n">input_layer</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">24</span><span class="p">,),</span> <span class="n">name</span><span class="o">=</span><span class="s2">"input_layer"</span><span class="p">)</span>
+    <span class="c1">##i am initilizing randomly. But you can use predefined embeddings. </span>
+    <span class="n">x_embedd</span> <span class="o">=</span> <span class="n">Embedding</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="n">number_vocab</span><span class="p">,</span> <span class="n">output_dim</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">input_length</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">mask_zero</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                        <span class="n">embeddings_initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">RandomNormal</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stddev</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">23</span><span class="p">),</span>
+                         <span class="n">name</span><span class="o">=</span><span class="s2">"Embedding_layer"</span><span class="p">)(</span><span class="n">input_layer</span><span class="p">)</span>
+    
+    <span class="n">x_lstm</span> <span class="o">=</span> <span class="n">LSTM</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'tanh'</span><span class="p">,</span> <span class="n">recurrent_activation</span><span class="o">=</span><span class="s1">'sigmoid'</span><span class="p">,</span> <span class="n">use_bias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                 <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">glorot_uniform</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">26</span><span class="p">),</span>
+                 <span class="n">recurrent_initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">orthogonal</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">54</span><span class="p">),</span>
+                 <span class="n">bias_initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">zeros</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s2">"LSTM_layer"</span><span class="p">)(</span><span class="n">x_embedd</span><span class="p">)</span>
+    
+    <span class="n">x_out</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'sigmoid'</span><span class="p">,</span> <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">glorot_uniform</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">45</span><span class="p">),</span>
+                  <span class="n">name</span><span class="o">=</span><span class="s2">"output_layer"</span><span class="p">)(</span><span class="n">x_lstm</span><span class="p">)</span>
+    
+    <span class="n">basic_lstm_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">input_layer</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">x_out</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"basic_lstm_model"</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">basic_lstm_model</span>
+
+
+<span class="n">basic_lstm_model</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">()</span>
+<span class="n">basic_lstm_model_anothertest</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><br>
+Now i created two models named <code>basic_lstm_model</code>, <code>basic_lstm_model_anothertest</code>. Those two model initial weights will be the same because of the fixed random seed. This removes a factor of a variation and very useful to tune parameters by doing some experimentation on the same weight initialization.</p>
+<p>we can check this as below.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">basic_lstm_model</span><span class="o">.</span><span class="n">get_weights</span><span class="p">()[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="n">basic_lstm_model_anothertest</span><span class="o">.</span><span class="n">get_weights</span><span class="p">()[</span><span class="n">i</span><span class="p">])</span> \
+ <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">basic_lstm_model</span><span class="o">.</span><span class="n">get_weights</span><span class="p">()))]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[True, True, True, True, True, True]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Training-a-NN">
+<a class="anchor" href="#Training-a-NN" aria-hidden="true"><span class="octicon octicon-link"></span></a>Training a NN<a class="anchor-link" href="#Training-a-NN"> </a>
+</h2>
+<p><code>Loss functions</code> - If we calculate the loss in the wrong manner, we will get the wrong gradients and it doesn't learn perfectly.</p>
+<p>Some of the mistakes in Loss functions:</p>
+<ul>
+<li>one of the main mistakes in the loss creation is giving <code>wrong inputs</code> to the loss function. If we are using the cross-entropy, you have to give one-hot vector as input otherwise, use sparse_categorical_crossentropy(no need to give the one-hot vectors). </li>
+<li>If you are using a function that calculates the loss using unnormalized <code>logits</code>, don't give the probability output as input to the loss function. ( check logits parameter in the tensorflow loss functions)</li>
+<li>It is useful to mask unnecessary output while calculating loss. Eg: don't include output at the padded word position while calculation loss. </li>
+<li>Selecting a loss function that allowing the calculation of <code>large error</code> values. Because of this, your loss may explode, you may get NaN and it affects the gradients too.</li>
+</ul>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">##masked loss Eg for sequence output. </span>
+<span class="k">def</span> <span class="nf">maskedLoss</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+    <span class="c1">#getting mask value</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    
+    <span class="c1">#calculating the loss</span>
+    <span class="n">loss_</span> <span class="o">=</span> <span class="n">loss_function</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+    
+    <span class="c1">#converting mask dtype to loss_ dtype</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">loss_</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    
+    <span class="c1">#applying the mask to loss</span>
+    <span class="n">loss_</span> <span class="o">=</span> <span class="n">loss_</span><span class="o">*</span><span class="n">mask</span>
+    
+    <span class="c1">#getting mean over all the values</span>
+    <span class="n">loss_</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">loss_</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">loss_</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">##creating a loss object for this classification problem</span>
+<span class="n">loss_function</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">BinaryCrossentropy</span><span class="p">(</span><span class="n">from_logits</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s1">'auto'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Training and validation functions</p>
+<ul>
+<li>We have to take care of the toggling training flag because some of the layers behaves differently in training and testing.</li>
+</ul>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#optimizer</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+
+<span class="c1">#trainign function</span>
+<span class="nd">@tf</span><span class="o">.</span><span class="n">function</span>
+<span class="k">def</span> <span class="nf">train_step</span><span class="p">(</span><span class="n">input_vector</span><span class="p">,</span> <span class="n">output_vector</span><span class="p">,</span><span class="n">loss_fn</span><span class="p">):</span>
+    <span class="c1">#taping the gradients</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">GradientTape</span><span class="p">()</span> <span class="k">as</span> <span class="n">tape</span><span class="p">:</span>
+        <span class="c1">#for ward prop</span>
+        <span class="n">output_predicted</span> <span class="o">=</span> <span class="n">basic_lstm_model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">input_vector</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1">#loss calculation</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">output_vector</span><span class="p">,</span> <span class="n">output_predicted</span><span class="p">)</span>
+    <span class="c1">#getting gradients</span>
+    <span class="n">gradients</span> <span class="o">=</span> <span class="n">tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">basic_lstm_model</span><span class="o">.</span><span class="n">trainable_variables</span><span class="p">)</span>
+    <span class="c1">#applying gradients</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">apply_gradients</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">gradients</span><span class="p">,</span> <span class="n">basic_lstm_model</span><span class="o">.</span><span class="n">trainable_variables</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">loss</span><span class="p">,</span> <span class="n">output_predicted</span>
+
+<span class="c1">#validation function</span>
+<span class="nd">@tf</span><span class="o">.</span><span class="n">function</span>
+<span class="k">def</span> <span class="nf">val_step</span><span class="p">(</span><span class="n">input_vector</span><span class="p">,</span> <span class="n">output_vector</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">):</span>
+    <span class="c1">#forward prop</span>
+    <span class="n">output_predicted</span> <span class="o">=</span> <span class="n">basic_lstm_model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">input_vector</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="c1">#loss calculation</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">output_vector</span><span class="p">,</span> <span class="n">output_predicted</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">loss</span><span class="p">,</span> <span class="n">output_predicted</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Training the NN with proper data.</p>
+<ul>
+<li>While Training the model, I suggest you <code>don't write the complex pipelining</code> of the data and train your network at the start. If you do this, finding the bugs in your network is very difficult. Just get a few instances of data( maybe 10% of your total train data if you have 10K records) into your RAM and try to train your network. In this case, I have total data in my RAM so, I will slice a few batches and try to train the network.</li>
+</ul>
+<ul>
+<li>I will suggest you <code>don't include the data augmentation</code> as of now. It is useful for regularizing the model but try to avoid it at the start. Even if you do data augmentation, be careful about the labels. Eg: In the segmentation task, if you flip the image, you have to flip the label image as well. </li>
+</ul>
+<ul>
+<li>Check for <code>casting issues</code>. Eg. If layer needs int8, give the int8 value only as input. If you have float values, just cast the dtype. If data stored in the disk is float32, load the data into RAM with the same dtype.  </li>
+</ul>
+<ul>
+<li>Check the <code>data pairing issue</code> i.e. while giving the train data, you have to give the correct pairs of x and y. Training the NN with proper data.</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Training the NN with data for 2 epochs and printing batchwise loss and finally getting mean of all those. Even if you use the .fit method of Keras API, it prints the aggregated value of loss/metric as part of verbose. You can check that aggregate class <a href="https://github.com/tensorflow/tensorflow/blob/e5bf8de410005de06a7ff5393fafdf832ef1d4ad/tensorflow/python/keras/engine/training_utils.py#L113">here</a></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">##training</span>
+<span class="n">EPOCHS</span><span class="o">=</span><span class="mi">2</span>
+
+<span class="c1">##metrics # Even if you use .fit method, it alsocalculates batchwise loss/metric and aggregates those.  </span>
+<span class="n">train_loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">Mean</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'train_loss'</span><span class="p">)</span>
+<span class="n">val_loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">Mean</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'test_loss'</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">):</span>
+    <span class="c1">#losses</span>
+    <span class="n">train_loss</span><span class="o">.</span><span class="n">reset_states</span><span class="p">()</span>
+    <span class="n">val_loss</span><span class="o">.</span><span class="n">reset_states</span><span class="p">()</span>
+    
+    <span class="c1">#training</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'Batchwise Train loss'</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">text_seq</span><span class="p">,</span> <span class="n">label_seq</span> <span class="ow">in</span> <span class="n">train_dataset</span><span class="p">:</span>
+        <span class="n">loss_</span><span class="p">,</span> <span class="n">pred_out</span> <span class="o">=</span> <span class="n">train_step</span><span class="p">(</span><span class="n">text_seq</span><span class="p">,</span> <span class="n">label_seq</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">loss_</span><span class="p">)</span>
+        <span class="n">train_loss</span><span class="p">(</span><span class="n">loss_</span><span class="p">)</span>
+    
+    <span class="c1">#validation</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'Batchwise Val loss'</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">text_seq_val</span><span class="p">,</span> <span class="n">label_seq_val</span> <span class="ow">in</span> <span class="n">val_dataset</span><span class="p">:</span>
+        <span class="n">loss_test</span><span class="p">,</span> <span class="n">pred_out_test</span> <span class="o">=</span> <span class="n">val_step</span><span class="p">(</span><span class="n">text_seq_val</span><span class="p">,</span> <span class="n">label_seq_val</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">loss_test</span><span class="p">)</span>
+        <span class="n">val_loss</span><span class="p">(</span><span class="n">loss_test</span><span class="p">)</span>
+    
+    <span class="n">template</span> <span class="o">=</span> <span class="s1">'Epoch </span><span class="si">{}</span><span class="s1">, Mean Loss: </span><span class="si">{}</span><span class="s1">, Mean Val Loss: </span><span class="si">{}</span><span class="s1">'</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">train_loss</span><span class="o">.</span><span class="n">result</span><span class="p">(),</span> <span class="n">val_loss</span><span class="o">.</span><span class="n">result</span><span class="p">()))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'-'</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Batchwise Train loss
+tf.Tensor(0.69066906, shape=(), dtype=float32)
+tf.Tensor(0.6978342, shape=(), dtype=float32)
+tf.Tensor(0.7214557, shape=(), dtype=float32)
+Batchwise Val loss
+tf.Tensor(0.7479876, shape=(), dtype=float32)
+tf.Tensor(0.6868224, shape=(), dtype=float32)
+tf.Tensor(0.71952724, shape=(), dtype=float32)
+Epoch 1, Mean Loss: 0.7033197283744812, Mean Val Loss: 0.7181124687194824
+--------------------------------------------------
+Batchwise Train loss
+tf.Tensor(0.6816538, shape=(), dtype=float32)
+tf.Tensor(0.69258916, shape=(), dtype=float32)
+tf.Tensor(0.6689039, shape=(), dtype=float32)
+Batchwise Val loss
+tf.Tensor(0.744266, shape=(), dtype=float32)
+tf.Tensor(0.681653, shape=(), dtype=float32)
+tf.Tensor(0.71762204, shape=(), dtype=float32)
+Epoch 2, Mean Loss: 0.6810489296913147, Mean Val Loss: 0.7145137190818787
+--------------------------------------------------
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Debugging-and-Enhancing-NN">
+<a class="anchor" href="#Debugging-and-Enhancing-NN" aria-hidden="true"><span class="octicon octicon-link"></span></a>Debugging and Enhancing NN<a class="anchor-link" href="#Debugging-and-Enhancing-NN"> </a>
+</h2>
+<p>Till now, we have created a basic NN for our problem and trained the NN. Now I will discuss some hacks to debug and enhance your training process to get better results.</p>
+<ul>
+<li>Using Basic print statements and checking the shapes of input and output of every layer. Using this, we can remove the <code>shape related error</code> or basic errors related to output while creating a model. If you want to print in tensorflow code, please use tf.print</li>
+</ul>
+<ul>
+<li>With Eager execution, we can debug our code very easily. it can be done using <code>pdb</code> or using any ide. You have to set <code>tf.config.experimental_run_functions_eagerly(True)</code> to debug your tf2.0 functions.</li>
+</ul>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">##LSTM</span>
+
+<span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">experimental_run_functions_eagerly</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1">##fixing numpy RS</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1">##fixing tensorflow RS</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">set_seed</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+
+<span class="c1">##python RS</span>
+<span class="n">rn</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">pdb</span>
+
+<span class="c1">##model</span>
+<span class="k">def</span> <span class="nf">get_model_debug</span><span class="p">():</span>
+    <span class="n">input_layer_d</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">24</span><span class="p">,),</span> <span class="n">name</span><span class="o">=</span><span class="s2">"input_layer"</span><span class="p">)</span>
+    <span class="c1">##i am initilizing randomly. But you can use predefined embeddings. </span>
+    <span class="n">x_embedd_d</span><span class="o">=</span> <span class="n">Embedding</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="n">number_vocab</span><span class="p">,</span> <span class="n">output_dim</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">input_length</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">mask_zero</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                        <span class="n">embeddings_initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">RandomNormal</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stddev</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">23</span><span class="p">),</span>
+                         <span class="n">name</span><span class="o">=</span><span class="s2">"Embedding_layer"</span><span class="p">)(</span><span class="n">input_layer_d</span><span class="p">)</span>
+    
+    <span class="c1">#LSTM</span>
+    <span class="n">x_lstm_d</span> <span class="o">=</span> <span class="n">LSTM</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'tanh'</span><span class="p">,</span> <span class="n">recurrent_activation</span><span class="o">=</span><span class="s1">'sigmoid'</span><span class="p">,</span> <span class="n">use_bias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                 <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">glorot_uniform</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">26</span><span class="p">),</span>
+                 <span class="n">recurrent_initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">orthogonal</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">54</span><span class="p">),</span>
+                 <span class="n">bias_initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">zeros</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s2">"LSTM_layer"</span><span class="p">)(</span><span class="n">x_embedd_d</span><span class="p">)</span>
+    
+    <span class="c1">#trace</span>
+    <span class="n">pdb</span><span class="o">.</span><span class="n">set_trace</span><span class="p">()</span>
+    
+    <span class="n">x_out_d</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'sigmoid'</span><span class="p">,</span> <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">glorot_uniform</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">45</span><span class="p">),</span>
+                  <span class="n">name</span><span class="o">=</span><span class="s2">"output_layer"</span><span class="p">)(</span><span class="n">x_lstm_d</span><span class="p">)</span>
+    
+    <span class="n">basic_lstm_model_d</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">input_layer_d</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">x_out_d</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"basic_lstm_model_d"</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">basic_lstm_model_d</span>
+
+
+<span class="n">basic_model_debug</span> <span class="o">=</span> <span class="n">get_model_debug</span><span class="p">()</span>
+
+<span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">experimental_run_functions_eagerly</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&gt; &lt;ipython-input-14-476c66b41633&gt;(31)get_model_debug()
+-&gt; x_out_d = Dense(1, activation='sigmoid', kernel_initializer=tf.keras.initializers.glorot_uniform(seed=45),
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+</div>
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{'input_layer_d': &lt;tf.Tensor 'input_layer_2:0' shape=(None, 24) dtype=float32&gt;, 'x_embedd_d': &lt;tf.Tensor 'Embedding_layer_2/Identity:0' shape=(None, 24, 100) dtype=float32&gt;, 'x_lstm_d': &lt;tf.Tensor 'LSTM_layer_2/Identity:0' shape=(None, 20) dtype=float32&gt;}
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+</div>
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&gt; &lt;ipython-input-14-476c66b41633&gt;(32)get_model_debug()
+-&gt; name="output_layer")(x_lstm_d)
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+</div>
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&gt; &lt;ipython-input-14-476c66b41633&gt;(34)get_model_debug()
+-&gt; basic_lstm_model_d = Model(inputs=input_layer_d, outputs=x_out_d, name="basic_lstm_model_d")
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>You can also Debug the Trainig loopas shown below.<br>
+For PDB instrctions, please check <a href="https://web.stanford.edu/class/physics91si/2013/handouts/Pdb_Commands.pdf">this</a> PDF.</p>
+<p><b>My preference and suggestion is to use IDE Debugger</b></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">##training</span>
+<span class="n">EPOCHS</span><span class="o">=</span><span class="mi">1</span>
+<span class="c1">##metrics # Even if you use .fit method, it alsocalculates batchwise loss/metric and aggregates those.  </span>
+<span class="n">train_loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">Mean</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'train_loss'</span><span class="p">)</span>
+
+<span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">experimental_run_functions_eagerly</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">):</span>
+    <span class="n">train_loss</span><span class="o">.</span><span class="n">reset_states</span><span class="p">()</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'Batchwise Train loss'</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">text_seq</span><span class="p">,</span> <span class="n">label_seq</span> <span class="ow">in</span> <span class="n">train_dataset</span><span class="p">:</span>
+        <span class="n">pdb</span><span class="o">.</span><span class="n">set_trace</span><span class="p">()</span>
+        <span class="n">loss_</span><span class="p">,</span> <span class="n">pred_out</span> <span class="o">=</span> <span class="n">train_step</span><span class="p">(</span><span class="n">text_seq</span><span class="p">,</span> <span class="n">label_seq</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">loss_</span><span class="p">)</span>
+        <span class="n">train_loss</span><span class="p">(</span><span class="n">loss_</span><span class="p">)</span>
+    
+    <span class="n">template</span> <span class="o">=</span> <span class="s1">'Epoch </span><span class="si">{}</span><span class="s1">, Mean Loss: </span><span class="si">{}</span><span class="s1">'</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">train_loss</span><span class="o">.</span><span class="n">result</span><span class="p">()))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'-'</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">experimental_run_functions_eagerly</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Batchwise Train loss
+&gt; &lt;ipython-input-15-aa3750dbfb83&gt;(13)&lt;module&gt;()
+-&gt; loss_, pred_out = train_step(text_seq, label_seq, loss_function)
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+</div>
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>--Call--
+&gt; d:\softwares\anaconda3\envs\tf2\lib\site-packages\tensorflow_core\python\eager\def_function.py(551)__call__()
+-&gt; def __call__(self, *args, **kwds):
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+</div>
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>tf.Tensor(0.66431165, shape=(), dtype=float32)
+&gt; &lt;ipython-input-15-aa3750dbfb83&gt;(12)&lt;module&gt;()
+-&gt; pdb.set_trace()
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+</div>
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>tf.Tensor(0.6668887, shape=(), dtype=float32)
+&gt; &lt;ipython-input-15-aa3750dbfb83&gt;(13)&lt;module&gt;()
+-&gt; loss_, pred_out = train_step(text_seq, label_seq, loss_function)
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+</div>
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>tf.Tensor(0.6523603, shape=(), dtype=float32)
+Epoch 1, Mean Loss: 0.6611868739128113
+--------------------------------------------------
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Once you are done with the creation of the model, Try to Train the model with <code>less data</code>( i have taken 100 samples) and try to <code>overfit</code> the model to that data. To do so we increase the capacity of our model (e.g. add layers or filters) and verify that we can reach the lowest achievable loss (e.g. zero). If your model is unable to overfit a few data points, then either it's too small (which is unlikely in today's age), or something is wrong in its structure or the learning algorithm. check for bugs and try to remove those. I will discuss some of the bugs below. If this model is working fine without any bugs, you can train with full data. </li>
+</ul>
+<ul>
+<li>
+<p><code>Tensorboard</code> is another important tool to debug NN while training. You can <code>visualize</code> the Loss, metrics, gradient/output histograms, distributions, graph and many more. I am writing code to plot all these in the tensorboard.</p>
+</li>
+<li>
+<p>As of now, we are printing/plotting the <code>Mean</code> loss/metric for all the batches in one epoch and, based on this we are analyzing the model performance. This may lead to wrong models for some of the loss functions/metrics. Even if you use the smoothing, it is not an accurate one, it will get an exponentially weighted average over batch-wise loss/metric. so Try to get a loss/metric for entire data of train and Val/test. If you have time/space constraint, at least get for the val/test data. Eg: Mean of Cross entropy over batches is equal to the cross-entropy over total data but not for AUC/F1 score.</p>
+<p>Below I have written code that calculates loss and metric(AUC) over batches and gets the mean as well as a total loss at once and a better Training and validation functions with tensorboard. please look into it.</p>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">##training</span>
+
+<span class="c1">##model creation</span>
+<span class="n">basic_lstm_model</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">()</span>
+
+<span class="c1">##optimizer</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.005</span><span class="p">)</span>
+
+<span class="c1">##metric</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_auc_score</span>
+
+<span class="c1">##train step function to train</span>
+<span class="nd">@tf</span><span class="o">.</span><span class="n">function</span>
+<span class="k">def</span> <span class="nf">train_step</span><span class="p">(</span><span class="n">input_vector</span><span class="p">,</span> <span class="n">output_vector</span><span class="p">,</span><span class="n">loss_fn</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">GradientTape</span><span class="p">()</span> <span class="k">as</span> <span class="n">tape</span><span class="p">:</span>
+        <span class="c1">#forward propagation</span>
+        <span class="n">output_predicted</span> <span class="o">=</span> <span class="n">basic_lstm_model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">input_vector</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1">#loss</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">output_vector</span><span class="p">,</span> <span class="n">output_predicted</span><span class="p">)</span>
+    <span class="c1">#getting gradients</span>
+    <span class="n">gradients</span> <span class="o">=</span> <span class="n">tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">basic_lstm_model</span><span class="o">.</span><span class="n">trainable_variables</span><span class="p">)</span>
+    <span class="c1">#applying gradients</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">apply_gradients</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">gradients</span><span class="p">,</span> <span class="n">basic_lstm_model</span><span class="o">.</span><span class="n">trainable_variables</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">loss</span><span class="p">,</span> <span class="n">output_predicted</span><span class="p">,</span> <span class="n">gradients</span>
+
+<span class="c1">##validation step function</span>
+<span class="nd">@tf</span><span class="o">.</span><span class="n">function</span>
+<span class="k">def</span> <span class="nf">val_step</span><span class="p">(</span><span class="n">input_vector</span><span class="p">,</span> <span class="n">output_vector</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">):</span>
+    <span class="c1">#getting output of validation data</span>
+    <span class="n">output_predicted</span> <span class="o">=</span> <span class="n">basic_lstm_model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">input_vector</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="c1">#loss calculation</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">output_vector</span><span class="p">,</span> <span class="n">output_predicted</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">loss</span><span class="p">,</span> <span class="n">output_predicted</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="c1">#batch size</span>
+<span class="n">BATCH_SIZE</span><span class="o">=</span><span class="mi">32</span>
+<span class="c1">##number of epochs</span>
+<span class="n">EPOCHS</span><span class="o">=</span><span class="mi">10</span>
+
+<span class="c1">##metrics # Even if you use .fit method, it alsocalculates batchwise loss/metric and aggregates those.  </span>
+<span class="n">train_loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">Mean</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'train_loss'</span><span class="p">)</span>
+<span class="n">val_loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">Mean</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'val_loss'</span><span class="p">)</span>
+<span class="n">train_metric</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">Mean</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"train_auc"</span><span class="p">)</span>
+<span class="n">val_metric</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">Mean</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"val_metric"</span><span class="p">)</span>
+
+<span class="c1">#tensorboard file writers</span>
+<span class="n">wtrain</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">create_file_writer</span><span class="p">(</span><span class="n">logdir</span><span class="o">=</span><span class="s1">'logs</span><span class="se">\\</span><span class="s1">train'</span><span class="p">)</span>
+<span class="n">wval</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">create_file_writer</span><span class="p">(</span><span class="n">logdir</span><span class="o">=</span><span class="s1">'logs</span><span class="se">\\</span><span class="s1">val'</span><span class="p">)</span>
+
+
+<span class="c1">#no of data points/batch_size i.e number of iterations in the one epoch</span>
+<span class="n">iters</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="mi">100</span><span class="o">/</span><span class="n">BATCH_SIZE</span><span class="p">)</span> 
+
+<span class="c1">#training anf validating</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">):</span>
+    
+    <span class="c1">#resetting the states of the loss and metrics</span>
+    <span class="n">train_loss</span><span class="o">.</span><span class="n">reset_states</span><span class="p">()</span>
+    <span class="n">val_loss</span><span class="o">.</span><span class="n">reset_states</span><span class="p">()</span>
+    <span class="n">train_metric</span><span class="o">.</span><span class="n">reset_states</span><span class="p">()</span>
+    <span class="n">val_metric</span><span class="o">.</span><span class="n">reset_states</span><span class="p">()</span>
+    
+    <span class="c1">##counter for train loop iteration</span>
+    <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="c1">#lists to save true and validation data. </span>
+    <span class="n">train_true</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">train_predicted</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">val_true</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">val_predicted</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1">#ietrating over train data batch by batch</span>
+    <span class="k">for</span> <span class="n">text_seq</span><span class="p">,</span> <span class="n">label_seq</span> <span class="ow">in</span> <span class="n">train_dataset</span><span class="p">:</span>
+        <span class="c1">#train step</span>
+        <span class="n">loss_</span><span class="p">,</span> <span class="n">pred_out</span><span class="p">,</span> <span class="n">gradients</span> <span class="o">=</span> <span class="n">train_step</span><span class="p">(</span><span class="n">text_seq</span><span class="p">,</span> <span class="n">label_seq</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">)</span>
+        <span class="c1">#adding loss to train loss</span>
+        <span class="n">train_loss</span><span class="p">(</span><span class="n">loss_</span><span class="p">)</span>
+        <span class="c1">#counting the step number</span>
+        <span class="n">temp_step</span> <span class="o">=</span> <span class="n">epoch</span><span class="o">*</span><span class="n">iters</span><span class="o">+</span><span class="n">counter</span>
+        <span class="n">counter</span> <span class="o">=</span> <span class="n">counter</span> <span class="o">+</span> <span class="mi">1</span>
+        
+        <span class="c1">#calculating AUC for batch</span>
+        <span class="n">batch_metric</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">label_seq</span><span class="p">,</span> <span class="n">pred_out</span><span class="p">)</span>
+        <span class="n">train_metric</span><span class="p">(</span><span class="n">batch_metric</span><span class="p">)</span>
+        
+        <span class="c1">#appending it to list</span>
+        <span class="n">train_predicted</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pred_out</span><span class="p">)</span>
+        <span class="n">train_true</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label_seq</span><span class="p">)</span>
+        
+        <span class="c1">##tensorboard </span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s1">'per_step_training'</span><span class="p">):</span>
+            <span class="k">with</span> <span class="n">wtrain</span><span class="o">.</span><span class="n">as_default</span><span class="p">():</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="s2">"batch_loss"</span><span class="p">,</span> <span class="n">loss_</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">temp_step</span><span class="p">)</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="s1">'batch_metric'</span><span class="p">,</span> <span class="n">batch_metric</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">temp_step</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s2">"per_batch_gradients"</span><span class="p">):</span>
+            <span class="k">with</span> <span class="n">wtrain</span><span class="o">.</span><span class="n">as_default</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">basic_lstm_model</span><span class="o">.</span><span class="n">trainable_variables</span><span class="p">)):</span>
+                    <span class="n">name_temp</span> <span class="o">=</span> <span class="n">basic_lstm_model</span><span class="o">.</span><span class="n">trainable_variables</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+                    <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">name_temp</span><span class="p">,</span> <span class="n">gradients</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">step</span><span class="o">=</span><span class="n">temp_step</span><span class="p">)</span>
+    
+    <span class="c1">#calculating the final loss and metric</span>
+    <span class="n">train_true</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">train_true</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">train_predicted</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">train_predicted</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">train_loss_final</span> <span class="o">=</span> <span class="n">loss_function</span><span class="p">(</span><span class="n">train_true</span><span class="p">,</span> <span class="n">train_predicted</span><span class="p">)</span>
+    <span class="n">train_metric_auc</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">train_true</span><span class="p">,</span> <span class="n">train_predicted</span><span class="p">)</span>
+    
+    <span class="c1">#validation data</span>
+    <span class="k">for</span> <span class="n">text_seq_val</span><span class="p">,</span> <span class="n">label_seq_val</span> <span class="ow">in</span> <span class="n">val_dataset</span><span class="p">:</span>
+        <span class="c1">#getting val output</span>
+        <span class="n">loss_val</span><span class="p">,</span> <span class="n">pred_out_val</span> <span class="o">=</span> <span class="n">val_step</span><span class="p">(</span><span class="n">text_seq_val</span><span class="p">,</span> <span class="n">label_seq_val</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">)</span>
+        <span class="c1">#appending to lists</span>
+        <span class="n">val_true</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label_seq_val</span><span class="p">)</span>
+        <span class="n">val_predicted</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pred_out_val</span><span class="p">)</span>
+        <span class="n">val_loss</span><span class="p">(</span><span class="n">loss_val</span><span class="p">)</span>
+        
+        <span class="c1">#calculating metric</span>
+        <span class="n">batch_metric_val</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">label_seq_val</span><span class="p">,</span> <span class="n">pred_out_val</span><span class="p">)</span>
+        <span class="n">val_metric</span><span class="p">(</span><span class="n">batch_metric_val</span><span class="p">)</span>
+    
+    
+    <span class="c1">#calculating final loss and metric   </span>
+    <span class="n">val_true</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">val_true</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">val_predicted</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">val_predicted</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">val_loss_final</span> <span class="o">=</span> <span class="n">loss_function</span><span class="p">(</span><span class="n">val_true</span><span class="p">,</span> <span class="n">val_predicted</span><span class="p">)</span>
+    <span class="n">val_metric_auc</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">val_true</span><span class="p">,</span> <span class="n">val_predicted</span><span class="p">)</span>
+    
+    <span class="c1">#printing</span>
+    <span class="n">template</span> <span class="o">=</span> <span class="s1">'''Epoch </span><span class="si">{}</span><span class="s1">, Train Loss: </span><span class="si">{:0.6f}</span><span class="s1">, Mean batch Train Loss: </span><span class="si">{:0.6f}</span><span class="s1">, AUC: </span><span class="si">{:0.5f}</span><span class="s1">, Mean batch Train AUC: </span><span class="si">{:0.5f}</span><span class="s1">,</span>
+<span class="s1">    Val Loss: </span><span class="si">{:0.6f}</span><span class="s1">, Mean batch Val Loss: </span><span class="si">{:0.6f}</span><span class="s1">, Val AUC: </span><span class="si">{:0.5f}</span><span class="s1">, Mean batch Val AUC: </span><span class="si">{:0.5f}</span><span class="s1">'''</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">train_loss_final</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">train_loss</span><span class="o">.</span><span class="n">result</span><span class="p">(),</span> 
+                          <span class="n">train_metric_auc</span><span class="p">,</span> <span class="n">train_metric</span><span class="o">.</span><span class="n">result</span><span class="p">(),</span> <span class="n">val_loss_final</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+                          <span class="n">val_loss</span><span class="o">.</span><span class="n">result</span><span class="p">(),</span> <span class="n">val_metric_auc</span><span class="p">,</span> <span class="n">val_metric</span><span class="o">.</span><span class="n">result</span><span class="p">()))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'-'</span><span class="o">*</span><span class="mi">30</span><span class="p">)</span>
+    
+    <span class="c1">#tensorboard</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s2">"per_epoch_loss_metric"</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">wtrain</span><span class="o">.</span><span class="n">as_default</span><span class="p">():</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="s2">"mean_loss"</span><span class="p">,</span> <span class="n">train_loss</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">step</span><span class="o">=</span><span class="n">epoch</span><span class="p">)</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="s1">'loss'</span><span class="p">,</span> <span class="n">train_loss_final</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">step</span><span class="o">=</span><span class="n">epoch</span><span class="p">)</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="s1">'metric'</span><span class="p">,</span> <span class="n">train_metric_auc</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">epoch</span><span class="p">)</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="s1">'mean_metric'</span><span class="p">,</span> <span class="n">train_metric</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">step</span><span class="o">=</span><span class="n">epoch</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">wval</span><span class="o">.</span><span class="n">as_default</span><span class="p">():</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="s1">'mean_loss'</span><span class="p">,</span> <span class="n">val_loss</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">step</span><span class="o">=</span><span class="n">epoch</span><span class="p">)</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="s1">'loss'</span><span class="p">,</span> <span class="n">val_loss_final</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">step</span><span class="o">=</span><span class="n">epoch</span><span class="p">)</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="s1">'metric'</span><span class="p">,</span> <span class="n">val_metric_auc</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">epoch</span><span class="p">)</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="s1">'mean_metric'</span><span class="p">,</span> <span class="n">val_metric</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">step</span><span class="o">=</span><span class="n">epoch</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Epoch 1, Train Loss: 0.700775, Mean batch Train Loss: 0.700775, AUC: 0.46829, Mean batch Train AUC: 0.45378,
+    Val Loss: 0.704532, Mean batch Val Loss: 0.704532, Val AUC: 0.48223, Mean batch Val AUC: 0.48844
+------------------------------
+Epoch 2, Train Loss: 0.596350, Mean batch Train Loss: 0.596350, AUC: 0.86608, Mean batch Train AUC: 0.86355,
+    Val Loss: 0.691127, Mean batch Val Loss: 0.691127, Val AUC: 0.52128, Mean batch Val AUC: 0.53295
+------------------------------
+Epoch 3, Train Loss: 0.508518, Mean batch Train Loss: 0.508518, AUC: 0.98973, Mean batch Train AUC: 0.98923,
+    Val Loss: 0.681388, Mean batch Val Loss: 0.681388, Val AUC: 0.55682, Mean batch Val AUC: 0.57112
+------------------------------
+Epoch 4, Train Loss: 0.441114, Mean batch Train Loss: 0.441114, AUC: 0.99554, Mean batch Train AUC: 0.99460,
+    Val Loss: 0.673574, Mean batch Val Loss: 0.673574, Val AUC: 0.58578, Mean batch Val AUC: 0.60539
+------------------------------
+Epoch 5, Train Loss: 0.368985, Mean batch Train Loss: 0.368985, AUC: 0.99868, Mean batch Train AUC: 0.99861,
+    Val Loss: 0.667929, Mean batch Val Loss: 0.667929, Val AUC: 0.61167, Mean batch Val AUC: 0.62760
+------------------------------
+Epoch 6, Train Loss: 0.306646, Mean batch Train Loss: 0.306646, AUC: 0.99956, Mean batch Train AUC: 1.00000,
+    Val Loss: 0.664882, Mean batch Val Loss: 0.664882, Val AUC: 0.62835, Mean batch Val AUC: 0.63807
+------------------------------
+Epoch 7, Train Loss: 0.249700, Mean batch Train Loss: 0.249700, AUC: 1.00000, Mean batch Train AUC: 1.00000,
+    Val Loss: 0.666024, Mean batch Val Loss: 0.666024, Val AUC: 0.63756, Mean batch Val AUC: 0.64217
+------------------------------
+Epoch 8, Train Loss: 0.195906, Mean batch Train Loss: 0.195906, AUC: 1.00000, Mean batch Train AUC: 1.00000,
+    Val Loss: 0.671024, Mean batch Val Loss: 0.671024, Val AUC: 0.64063, Mean batch Val AUC: 0.64618
+------------------------------
+Epoch 9, Train Loss: 0.151549, Mean batch Train Loss: 0.151549, AUC: 1.00000, Mean batch Train AUC: 1.00000,
+    Val Loss: 0.679804, Mean batch Val Loss: 0.679804, Val AUC: 0.64458, Mean batch Val AUC: 0.64464
+------------------------------
+Epoch 10, Train Loss: 0.111988, Mean batch Train Loss: 0.111988, AUC: 1.00000, Mean batch Train AUC: 1.00000,
+    Val Loss: 0.695000, Mean batch Val Loss: 0.695000, Val AUC: 0.64283, Mean batch Val AUC: 0.64751
+------------------------------
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I trained the model for 10 epochs and my loss is decreasing and AUC of train data became 1(overfit). But some times it may not overfit to the model. If it is not overfitting, there may be so many reasons like code written to create the model is incorrect, the model is not capable of learning the data, learning problems like vanishing or exploding gradients and many more. I will discuss these problems below and These problems may occur even while training with total data.</p>
+<h3 id="Check-whether-forward-propagation-is-correct-or-not">
+<a class="anchor" href="#Check-whether-forward-propagation-is-correct-or-not" aria-hidden="true"><span class="octicon octicon-link"></span></a>Check whether forward propagation is correct or not<a class="anchor-link" href="#Check-whether-forward-propagation-is-correct-or-not"> </a>
+</h3>
+<p>while training NN, we will use the vectorizing implementations of data manipulation. If we did any mistake in these implementations, our training process will give bad results. We can verify this with a simple hack using <code>back prop dependency</code>. Below are the steps to do.</p>
+<ul>
+<li>Take a few data points. Here I am taking 5 data points. You can get it from the data or you can generate random data with the same shape. </li>
+<li>do forward propagation on the model we created with the above batch data. </li>
+<li>write a loss function that takes the true values, predicted values and returns loss as sum of the i^th data point output where i less than 5. I am using 3.</li>
+<li>do the back prop and check the gradients with respect to the input data points. If you are getting non zero gradients only for i-th data point, your forward propagation is right otherwise, there is some error in the forward propagation and you have to debug the code to check the error. </li>
+</ul>
+<p>In the implementation below, I have written basic implementation, not included any tensorboard/metrics and there is no need for those as well. 
+</p>
+<div class="flash">
+    <svg class="octicon octicon-info" viewbox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg>
+    <strong>Note: </strong>Gradient won’t flow through the embedding layer so you will get None gradients if you calculate the gradient with of loss with respect to the input. If you have the embedding layer at starting, please remove the embedding layer and give the input directly to the next layer. It is very easy to do because This layer can only be used as the first layer in a model. 
+</div>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">##same model with name changes and without emedding layer.</span>
+<span class="k">def</span> <span class="nf">get_model_check</span><span class="p">():</span>
+    <span class="c1">##directly using embedding dimention of 1. It is only for checking so no problem with it. </span>
+    <span class="n">input_layer</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"input_layer_debug"</span><span class="p">)</span>
+    
+    <span class="c1">##i am initilizing randomly. But you can use predefined embeddings. </span>
+    <span class="c1">#x_embedd = Embedding(input_dim=13732, output_dim=100, input_length=24, mask_zero=True, </span>
+                        <span class="c1">#embeddings_initializer=tf.keras.initializers.RandomNormal(mean=0, stddev=1, seed=23),</span>
+                         <span class="c1">#name="Embedding_layer")(input_layer)</span>
+    
+    <span class="n">x_lstm</span> <span class="o">=</span> <span class="n">LSTM</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'tanh'</span><span class="p">,</span> <span class="n">recurrent_activation</span><span class="o">=</span><span class="s1">'sigmoid'</span><span class="p">,</span> <span class="n">use_bias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                 <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">glorot_uniform</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">26</span><span class="p">),</span>
+                 <span class="n">recurrent_initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">orthogonal</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">54</span><span class="p">),</span>
+                 <span class="n">bias_initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">zeros</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s2">"LSTM_layer_debug"</span><span class="p">)(</span><span class="n">input_layer</span><span class="p">)</span>
+    
+    <span class="n">x_out</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'sigmoid'</span><span class="p">,</span> <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">glorot_uniform</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">45</span><span class="p">),</span>
+                  <span class="n">name</span><span class="o">=</span><span class="s2">"output_layer_debug"</span><span class="p">)(</span><span class="n">x_lstm</span><span class="p">)</span>
+    
+    <span class="n">basic_model_debug</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">input_layer</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">x_out</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"basic_lstm_model_debug"</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">basic_model_debug</span>
+
+<span class="n">basic_model_debug</span> <span class="o">=</span> <span class="n">get_model_check</span><span class="p">()</span>
+
+<span class="c1">##generated random 5 data points of shape (24,1) i.e 4 time steps and 1 dim embedding. </span>
+<span class="n">temp_features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="c1">##generated the a random output zero or 1. I think, there is no use for this as well because </span>
+<span class="c1">#we will calculate loss only with predicted values</span>
+<span class="n">temp_outs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">loss_to_ckgrads</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+    <span class="c1">#y_pred is one dimentional you can give directly one data point prediction as loss. </span>
+    <span class="c1">#I am giving loss as 3rd data point prediction so we will get non zero gradients only for 3rd data point. </span>
+    <span class="c1">#if your prediction is sequence, please add all the i-th data point predictions and return those. </span>
+    <span class="k">return</span> <span class="n">y_pred</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">get_gradient</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x_tensor</span><span class="p">):</span>
+    <span class="c1">#taping the gradients</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">GradientTape</span><span class="p">()</span> <span class="k">as</span> <span class="n">tape</span><span class="p">:</span>
+        <span class="c1">#explicitly telling to watch for input vector. it won't watch with repect to any inputs by default.</span>
+        <span class="c1">#it only watches the gradents with weight vectors</span>
+        <span class="n">tape</span><span class="o">.</span><span class="n">watch</span><span class="p">(</span><span class="n">x_tensor</span><span class="p">)</span>
+        <span class="c1">#model predictions</span>
+        <span class="n">preds</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x_tensor</span><span class="p">)</span>
+        <span class="c1">#getting the loss</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_to_ckgrads</span><span class="p">(</span><span class="n">temp_outs</span><span class="p">,</span> <span class="n">preds</span><span class="p">)</span>
+    <span class="c1">#getting the gradients    </span>
+    <span class="n">grads</span> <span class="o">=</span> <span class="n">tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">x_tensor</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">grads</span>
+<span class="c1">##making temp_feature as varible. We can get the gradients only if it is a varible so chnaging it to variable</span>
+<span class="n">temp_features</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">convert_to_tensor</span><span class="p">(</span><span class="n">temp_features</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+<span class="c1">##</span>
+<span class="n">grads</span> <span class="o">=</span> <span class="n">get_gradient</span><span class="p">(</span><span class="n">basic_model_debug</span><span class="p">,</span> <span class="n">temp_features</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">grads</span><span class="p">:</span>
+    <span class="c1">#checking whether all zeros or not</span>
+    <span class="c1">#except 3rd all the grdients should be zero i.e True</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">all</span><span class="p">(</span><span class="n">i</span><span class="o">==</span><span class="mi">0</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>True
+True
+False
+True
+True
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><font size="3" face="Calibri">
+If you are not getting all true except the i-th one, you may have any issue in your code. You have to check that and resolve it. Without that, don't go to another step.&lt;/p&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="What-to-do-when-Loss-Explodes">
+<a class="anchor" href="#What-to-do-when-Loss-Explodes" aria-hidden="true"><span class="octicon octicon-link"></span></a>What to do when Loss Explodes<a class="anchor-link" href="#What-to-do-when-Loss-Explodes"> </a>
+</h3>
+<p>while training NN, you may get NaN/inf loss becuase of large or small values. Below are some causes</p>
+<ul>
+<li>Numerical stability issues.<ul>
+<li>Check the multiplications, if you are multiplying so many tensors at once, apply log and make it to addition.</li>
+<li>Check for the division operation. any zero division is happening or not. Try to add a small constant like 1e-12 to the denominator. </li>
+<li>Check the softmax function. If your vocab size if very large, try not to use the softmax function. calculate the loss based on the logits. </li>
+</ul>
+</li>
+<li>If the updates to the weights are very large, you may get numerical instability and it may explode. <ul>
+<li>Check for the Learning rate. If the learning rate is high, you may get this problem as well.</li>
+<li>Check for the exploding gradient problem. In tensorboard, you can visualize the gradient histograms and you can check the problem. If gradients are exploding, try to clip the gradients. You can apply <code>tf.linalg.normalize</code> or <code>tf.clip_by_value</code> to your gradients after getting gradients from the GradientTape.</li>
+</ul>
+</li>
+<li>It may occur because of a poor choice of loss function i.e. allowing the calculation of large error values. </li>
+<li>It may occur because of the poor data preparation i.e. allowing large differences in the target variables.</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="What-to-do-when-loss-Increases&lt;/b&gt;">
+<a class="anchor" href="#What-to-do-when-loss-Increases&lt;/b&gt;" aria-hidden="true"><span class="octicon octicon-link"></span></a>What to do when loss Increases&lt;/b&gt;<a class="anchor-link" href="#What-to-do-when-loss-Increases&lt;/b&gt;"> </a>
+</h3>
+<p>while training NN, our loss may increase some times. Below are some causes</p>
+<ul>
+<li>Check for the Learning rate. If the learning rate is high, you may get this problem as well.</li>
+<li>Check for the wrong loss function. Especially sign of the loss function.</li>
+<li>Activation functions applying over wrong dimensions. (you can find this out using the point number 1(checking forward propagation is correct or not)</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="What-to-do-when-loss-Oscillate&lt;/b&gt;">
+<a class="anchor" href="#What-to-do-when-loss-Oscillate&lt;/b&gt;" aria-hidden="true"><span class="octicon octicon-link"></span></a>What to do when loss Oscillate&lt;/b&gt;<a class="anchor-link" href="#What-to-do-when-loss-Oscillate&lt;/b&gt;"> </a>
+</h3>
+<p>while training NN, our loss may oscillate. Below are some causes</p>
+<ul>
+<li>Check for the Learning rate. If the learning rate is high, you may get this problem as well.</li>
+<li>Sometimes it may occur because of the exploding gradient problem. so check for that one as well. You can check this using the <code>Tensorboard</code>. </li>
+<li>It may occur due to data pairing issues/data corruption. We already discussed this. so make sure to get the proper data. </li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="What-to-do-when-loss-is-constant">
+<a class="anchor" href="#What-to-do-when-loss-is-constant" aria-hidden="true"><span class="octicon octicon-link"></span></a>What to do when loss is constant<a class="anchor-link" href="#What-to-do-when-loss-is-constant"> </a>
+</h3>
+<p>while training NN, our loss constant. Below are some causes</p>
+<ul>
+<li>If the updates to the weights are very low, you may end up in the same position.<ul>
+<li>Check for the learning rate. If the learning rate is low, our weights won't update much so you may get this problem. </li>
+<li>Check for Vanishing Gradient problem. In <code>Tensorboard</code>, you can visualize the gradient histograms and you can check the problem. <ul>
+<li>You can solve this by changing the activations to relu/leaky relu.</li>
+<li>You can add skip connections to an easier flow of gradients. </li>
+<li>If you have long sequences in RNN, you can divide into smaller ones and train with stateful LSTM's(Truncated Back prop)</li>
+<li>Better weight initialization may reduce this.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Too much regularization may also cause this. </li>
+<li>If you are using Relu activation, it may occur due to the dead neurons. </li>
+<li>Incorrect inputs to the loss function. I already discussed this while discussing the loss functions. </li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="What-if-we-get-memory-Errors">
+<a class="anchor" href="#What-if-we-get-memory-Errors" aria-hidden="true"><span class="octicon octicon-link"></span></a>What if we get memory Errors<a class="anchor-link" href="#What-if-we-get-memory-Errors"> </a>
+</h3>
+<p>while training NN, many people face the memory exhaust errors because of the computing constraints.</p>
+<ul>
+<li>If you are getting GPU memory exhaust error, try to reduce the batch size and train the neural network. </li>
+<li>If your data doesn't fit into the RAM you have, Try to create a data pipeline using <code>tf.data</code> or <code>Keras/Python Data Generators</code> and load the batchwise data. My personal choice is to use <code>tf.data</code> pipelines. Please check <a href="https://www.tensorflow.org/guide/data">this</a> blog to know more about it. </li>
+<li>Please try to check for the duplicate operations like creating multiple models, storing temporary variables in the GPU memory.</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="What-if-we-Underfit-to-the-data">
+<a class="anchor" href="#What-if-we-Underfit-to-the-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>What if we Underfit to the data<a class="anchor-link" href="#What-if-we-Underfit-to-the-data"> </a>
+</h3>
+<p>some suggestions to make in decreasing order of priority</p>
+<ul>
+<li>Make your model bigger </li>
+<li>Reduce/Remove regularization(L1/L2/Dropout) if any. </li>
+<li>Do error analysis. based on this try to change the preprocessing/data if needed.</li>
+<li>Read technical papers and choose the state of the art models.</li>
+<li>Tune hyperparameters</li>
+<li>Add custom features if needed. </li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="What-if-we-Overfit-to-the-data">
+<a class="anchor" href="#What-if-we-Overfit-to-the-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>What if we Overfit to the data<a class="anchor-link" href="#What-if-we-Overfit-to-the-data"> </a>
+</h3>
+<p>some suggestions to make in decreasing order of priority</p>
+<ul>
+<li>Add more training data</li>
+<li>Add normalization layers(BN, layer norm) </li>
+<li>Add data augmentation</li>
+<li>Increase regularization</li>
+<li>Do error analysis. based on this try to change the preprocessing/data if needed.</li>
+<li>Choose a different model</li>
+<li>Tune hyperparameters</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><font size="3" face="Calibri">
+You can check some of my other blogs at <a href="https://udibhaskar.github.io/ml_blog/">this</a> link. This is my <a href="https://www.linkedin.com/in/uday-paila-1a496a84/">LinkedIn</a> and <a href="https://github.com/UdiBhaskar">GitHub</a>&lt;/p&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+ 
+
+</font></p>
+</div>
+</div></div></font></p>
+</div>
+</div></div>
+</div>
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="UdiBhaskar/practical-ml"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/practical-ml/debugging%20nn/neural%20network/overfit/underfit/2020/02/03/Effective_Training_and_Debugging_of_a_Neural_Networks.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/practical-ml/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/practical-ml/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/practical-ml/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>A Machine Learning blog.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/UdiBhaskar" title="UdiBhaskar"><svg class="svg-icon grey"><use xlink:href="/practical-ml/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
