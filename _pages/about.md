@@ -4,10 +4,5 @@ title: About Me
 permalink: /about/
 ---
 
-This is where you put the contents of your *About* page. Like all your pages, it's in [Markdown](https://guides.github.com/features/mastering-markdown/) format.
-
-This website is powered by **[fastpages](https://github.com/fastai/fastpages)** [^1].
-
-
-
-[^1]:a blogging platform that natively supports Jupyter notebooks in addition to other formats.
+I am a Machine Learning Engineer with four years of industry experience. Currently working on Query resolution systems and semantic similarity search with NLP. Involve in research and designing an approach, followed by code development.  
+You can check my [Linkedin](https://www.linkedin.com/in/uday-paila-1a496a84/) and [GitHub](https://github.com/UdiBhaskar)
