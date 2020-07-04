@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Normalization for Better Generalization and Faster Training | Practical Machine Learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Normalization for Better Generalization and Faster Training" />
+<meta name="author" content="Uday Paila" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Different types of Normalization layers ( Batch Norm, Layernorm)" />
+<meta property="og:description" content="Different types of Normalization layers ( Batch Norm, Layernorm)" />
+<link rel="canonical" href="https://udibhaskar.github.io/practical-ml/nlp/batchnorm/layernorm/normalization/2020/06/20/Normalization.html" />
+<meta property="og:url" content="https://udibhaskar.github.io/practical-ml/nlp/batchnorm/layernorm/normalization/2020/06/20/Normalization.html" />
+<meta property="og:site_name" content="Practical Machine Learning" />
+<meta property="og:image" content="https://i.imgur.com/Mpeu82o.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-06-20T00:00:00-05:00" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Uday Paila"},"description":"Different types of Normalization layers ( Batch Norm, Layernorm)","mainEntityOfPage":{"@type":"WebPage","@id":"https://udibhaskar.github.io/practical-ml/nlp/batchnorm/layernorm/normalization/2020/06/20/Normalization.html"},"@type":"BlogPosting","url":"https://udibhaskar.github.io/practical-ml/nlp/batchnorm/layernorm/normalization/2020/06/20/Normalization.html","headline":"Normalization for Better Generalization and Faster Training","dateModified":"2020-06-20T00:00:00-05:00","datePublished":"2020-06-20T00:00:00-05:00","image":"https://i.imgur.com/Mpeu82o.jpg","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/practical-ml/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://udibhaskar.github.io/practical-ml/feed.xml" title="Practical Machine Learning" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-171046409-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+<link rel="shortcut icon" type="image/x-icon" href="/practical-ml/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Normalization for Better Generalization and Faster Training | Practical Machine Learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Normalization for Better Generalization and Faster Training" />
+<meta name="author" content="Uday Paila" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Different types of Normalization layers ( Batch Norm, Layernorm)" />
+<meta property="og:description" content="Different types of Normalization layers ( Batch Norm, Layernorm)" />
+<link rel="canonical" href="https://udibhaskar.github.io/practical-ml/nlp/batchnorm/layernorm/normalization/2020/06/20/Normalization.html" />
+<meta property="og:url" content="https://udibhaskar.github.io/practical-ml/nlp/batchnorm/layernorm/normalization/2020/06/20/Normalization.html" />
+<meta property="og:site_name" content="Practical Machine Learning" />
+<meta property="og:image" content="https://i.imgur.com/Mpeu82o.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-06-20T00:00:00-05:00" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Uday Paila"},"description":"Different types of Normalization layers ( Batch Norm, Layernorm)","mainEntityOfPage":{"@type":"WebPage","@id":"https://udibhaskar.github.io/practical-ml/nlp/batchnorm/layernorm/normalization/2020/06/20/Normalization.html"},"@type":"BlogPosting","url":"https://udibhaskar.github.io/practical-ml/nlp/batchnorm/layernorm/normalization/2020/06/20/Normalization.html","headline":"Normalization for Better Generalization and Faster Training","dateModified":"2020-06-20T00:00:00-05:00","datePublished":"2020-06-20T00:00:00-05:00","image":"https://i.imgur.com/Mpeu82o.jpg","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://udibhaskar.github.io/practical-ml/feed.xml" title="Practical Machine Learning" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-171046409-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head><body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/practical-ml/">Practical Machine Learning</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/practical-ml/about/">About Me</a><a class="page-link" href="/practical-ml/search/">Search</a><a class="page-link" href="/practical-ml/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Normalization for Better Generalization and Faster Training</h1><p class="page-description">Different types of Normalization layers ( Batch Norm, Layernorm)</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-06-20T00:00:00-05:00" itemprop="datePublished">
+        Jun 20, 2020
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Uday Paila</span></span>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      3 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/practical-ml/categories/#NLP">NLP</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/practical-ml/categories/#Batchnorm">Batchnorm</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/practical-ml/categories/#layernorm">layernorm</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/practical-ml/categories/#normalization">normalization</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          
+          
+          
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#Batch-Normalization">Batch Normalization </a></li>
+<li class="toc-entry toc-h2"><a href="#Layer-Normalization">Layer Normalization </a></li>
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2020-06-20-Normalization.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Batch-Normalization">
+<a class="anchor" href="#Batch-Normalization" aria-hidden="true"><span class="octicon octicon-link"></span></a>Batch Normalization<a class="anchor-link" href="#Batch-Normalization"> </a>
+</h2>
+<p>Training Deep Neural Networks is complicated by the fact that the distribution of each layer’s inputs changes during training, as the parameters of the previous layers change. This slows down the training by requiring lower learning rates and careful parameter initialization and makes it notoriously hard to train models with saturating nonlinearities. so to overcome this, we can do a normalization after some layers as below.</p>
+<p><br></p>
+<p><img src="https://i.imgur.com/l26z2Zz.png" alt="BN" title="Credit: https://arxiv.org/pdf/2003.07845.pdf"></p>
+<p><br></p>
+<p>It calculates the batch means, std, and using those, normalizes the data then creates running mean and std which will be used in inference. 
+One intuition about why BatchNorm works is that it removes the internal covariance shift. You can check that in the below video.</p>
+<p><br>
+
+</p>
+<center>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/watch?v=nUUqwaxLnWs" frameborder="0" allowfullscreen=""></iframe>
+</center>
+
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><br></p>
+<p>Another intuition:</p>
+<p>Batch Normalization normalizes the activations in the intermediate layers. BN primarily enables training with a larger learning rate which is cause for faster convergence and better generalization.</p>
+<p>Larger batch size training may converge to sharp minima. If we converge to sharp minima, generalization capacity may decrease. so noise in the SGD has an important role in regularizing the NN. Similarly, Higher learning rate will bias the network towards wider minima so it will give the better generalization. But, training with a higher learning rate may cause an explosion in the updates.</p>
+<p>If we compare the gradients between with batch normalization and without batch normalization, without batch norm network gradients are larger and heavier tailed as shown below so we can train with larger learning rates with BN.</p>
+<p><img src="https://i.imgur.com/NuppcAM.png" alt="BNGradeints" title="Credit: https://arxiv.org/pdf/1806.02375.pdf"></p>
+<p><br>
+</p>
+<div class="flash flash-warn">
+    <svg class="octicon octicon-zap octicon octicon-zap octicon octicon-zap octicon octicon-zap octicon octicon-zap octicon octicon-zap" viewbox="0 0 10 16" version="1.1" width="10" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M10 7H6l3-7-9 9h4l-3 7 9-9z"></path></svg>
+    <strong>Important: </strong>BN is widely adopted in computer vision but, it leads to significant performance degradation for NLP. Nowadays Layer Normalization is preferred normalization technique for NLP tasks.
+</div>
+<br> 
+<div class="flash">
+    <svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewbox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg>
+    <strong>Note: </strong>BN cannot be applied to online learning tasks. BN cannot applied to extremely large distributed models where the minibatches have to be small. For forward neural networks, BN can be directly applied, because each layer has a fixed number of neurons, and the mean and variance statistics of each neuron in each layer of the network can be directly stored for model prediction, but in the RNNs network, different mini-batch may have different input sequence length, it is difficult to calculate statistical information, and the test sequence length cannot be greater than the maximum training sequence length
+</div>
+<br>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>You can check the figure below from a paper, which compares the BN in CV and NLP. The differences between running mean/Variance and batch mean/variance exhibit very high variance with extreme outliers in Transformers.</p>
+<p><img src="https://i.imgur.com/5xCloXd.png" alt="BN" title="Credit: https://arxiv.org/pdf/2003.07845.pdf"></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="n">input_layer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,))</span>
+<span class="n">bn_layer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">BatchNormalization</span><span class="p">()</span>
+<span class="n">bn_layer_out</span> <span class="o">=</span> <span class="n">bn_layer</span><span class="p">(</span><span class="n">input_layer</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Number of weights is'</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">bn_layer</span><span class="o">.</span><span class="n">get_weights</span><span class="p">()))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Number of weights is 4
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If we have <code>n</code> features as input to the BN layer, the weight matrix we have to learn is of size <code>(4, n)</code>, i.e. <code>n</code> features for each beta_initializer, gamma_initializer, moving_mean_initializer, moving_variance_initializer. 
+Please read Tensorflow documentation to know more about Training mode, inference mode of the BN layer. It is very important to take care of the mode in BN layer.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Layer-Normalization">
+<a class="anchor" href="#Layer-Normalization" aria-hidden="true"><span class="octicon octicon-link"></span></a>Layer Normalization<a class="anchor-link" href="#Layer-Normalization"> </a>
+</h2>
+<p>Unlike Batch normalization, it normalized horizontally i.e. it normalizes each data point. so $\mu$, $\sigma$ not depend on the batch. layer normalization does not have to use "running mean" and "running variance".</p>
+<p><img src="https://i.imgur.com/XRuwFls.png" alt="layernorm" title="Credit: https://papers.nips.cc/paper/8689-understanding-and-improving-layer-normalization.pdf"></p>
+<p>It gives the better results because of the gradinets with respect to  $\mu$, $\sigma$ in Layer Normalization. Derivative of $\mu$ re-centers network gradients to zero. Derivative of $\sigma$ reduces variance of network gradient, which can be seen a kind of re-scaling.</p>
+<p><br>
+</p>
+<div class="flash flash-warn">
+    <svg class="octicon octicon-zap octicon octicon-zap octicon octicon-zap octicon octicon-zap octicon octicon-zap octicon octicon-zap octicon octicon-zap" viewbox="0 0 10 16" version="1.1" width="10" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M10 7H6l3-7-9 9h4l-3 7 9-9z"></path></svg>
+    <strong>Important: </strong>The parameters of LayerNorm, including the bias and gain, increase the risk of over-fitting, and do not work in most cases. - <a href="https://papers.nips.cc/paper/8689-understanding-and-improving-layer-normalization.pdf">https://papers.nips.cc/paper/8689-understanding-and-improving-layer-normalization.pdf</a>. You can remove these using <code>center</code>, <code>scale</code> parameters in <code>Tensorflow</code>. 
+</div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="n">input_layer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">norm_layer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">LayerNormalization</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">norm_layer_out</span> <span class="o">=</span> <span class="n">norm_layer</span><span class="p">(</span><span class="n">input_layer</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Number of weights is'</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">norm_layer</span><span class="o">.</span><span class="n">get_weights</span><span class="p">()))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Number of weights is 0
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p></p>
+<div class="flash">
+    <svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewbox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg>
+    <strong>Note: </strong>If there is no gain and bias, number of weights is zero. 
+</div>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="n">input_layer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,),</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">norm_layer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">LayerNormalization</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">norm_layer_out</span> <span class="o">=</span> <span class="n">norm_layer</span><span class="p">(</span><span class="n">input_layer</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Number of weights is'</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">norm_layer</span><span class="o">.</span><span class="n">get_weights</span><span class="p">()))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Number of weights is 2
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="UdiBhaskar/practical-ml"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/practical-ml/nlp/batchnorm/layernorm/normalization/2020/06/20/Normalization.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/practical-ml/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/practical-ml/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/practical-ml/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>A Machine Learning blog.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/UdiBhaskar" title="UdiBhaskar"><svg class="svg-icon grey"><use xlink:href="/practical-ml/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
