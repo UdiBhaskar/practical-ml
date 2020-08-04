@@ -766,7 +766,7 @@ Now i created two models named <code>basic_lstm_model</code>, <code>basic_lstm_m
     <span class="n">loss_</span> <span class="o">=</span> <span class="n">loss_</span><span class="o">*</span><span class="n">mask</span>
     
     <span class="c1">#getting mean over all the values</span>
-    <span class="n">loss_</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">loss_</span><span class="p">)</span>
+    <span class="n">loss_</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">loss_</span><span class="p">)</span><span class="o">/</span><span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">loss_</span>
 </pre></div>
 
