@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Summary - KNN Algorithm | Practical Machine Learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Summary - KNN Algorithm" />
+<meta name="author" content="Uday Paila" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Training process and useful points to know about KNN" />
+<meta property="og:description" content="Training process and useful points to know about KNN" />
+<link rel="canonical" href="https://udibhaskar.github.io/practical-ml/knn/2020/08/10/KNN-Summary-Copy1.html" />
+<meta property="og:url" content="https://udibhaskar.github.io/practical-ml/knn/2020/08/10/KNN-Summary-Copy1.html" />
+<meta property="og:site_name" content="Practical Machine Learning" />
+<meta property="og:image" content="https://helloacm.com/wp-content/uploads/2016/03/2012-10-26-knn-concept.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-08-10T00:00:00-05:00" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Uday Paila"},"description":"Training process and useful points to know about KNN","mainEntityOfPage":{"@type":"WebPage","@id":"https://udibhaskar.github.io/practical-ml/knn/2020/08/10/KNN-Summary-Copy1.html"},"@type":"BlogPosting","url":"https://udibhaskar.github.io/practical-ml/knn/2020/08/10/KNN-Summary-Copy1.html","headline":"Summary - KNN Algorithm","dateModified":"2020-08-10T00:00:00-05:00","datePublished":"2020-08-10T00:00:00-05:00","image":"https://helloacm.com/wp-content/uploads/2016/03/2012-10-26-knn-concept.png","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/practical-ml/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://udibhaskar.github.io/practical-ml/feed.xml" title="Practical Machine Learning" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-171046409-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+<link rel="shortcut icon" type="image/x-icon" href="/practical-ml/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Summary - KNN Algorithm | Practical Machine Learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Summary - KNN Algorithm" />
+<meta name="author" content="Uday Paila" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Training process and useful points to know about KNN" />
+<meta property="og:description" content="Training process and useful points to know about KNN" />
+<link rel="canonical" href="https://udibhaskar.github.io/practical-ml/knn/2020/08/10/KNN-Summary-Copy1.html" />
+<meta property="og:url" content="https://udibhaskar.github.io/practical-ml/knn/2020/08/10/KNN-Summary-Copy1.html" />
+<meta property="og:site_name" content="Practical Machine Learning" />
+<meta property="og:image" content="https://helloacm.com/wp-content/uploads/2016/03/2012-10-26-knn-concept.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-08-10T00:00:00-05:00" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Uday Paila"},"description":"Training process and useful points to know about KNN","mainEntityOfPage":{"@type":"WebPage","@id":"https://udibhaskar.github.io/practical-ml/knn/2020/08/10/KNN-Summary-Copy1.html"},"@type":"BlogPosting","url":"https://udibhaskar.github.io/practical-ml/knn/2020/08/10/KNN-Summary-Copy1.html","headline":"Summary - KNN Algorithm","dateModified":"2020-08-10T00:00:00-05:00","datePublished":"2020-08-10T00:00:00-05:00","image":"https://helloacm.com/wp-content/uploads/2016/03/2012-10-26-knn-concept.png","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://udibhaskar.github.io/practical-ml/feed.xml" title="Practical Machine Learning" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-171046409-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head><body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/practical-ml/">Practical Machine Learning</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/practical-ml/about/">About Me</a><a class="page-link" href="/practical-ml/search/">Search</a><a class="page-link" href="/practical-ml/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Summary - KNN Algorithm</h1><p class="page-description">Training process and useful points to know about KNN</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-08-10T00:00:00-05:00" itemprop="datePublished">
+        Aug 10, 2020
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Uday Paila</span></span>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      3 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/practical-ml/categories/#KNN">KNN</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          
+          
+          
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#Terminology">Terminology </a></li>
+<li class="toc-entry toc-h2"><a href="#Algorithm">Algorithm </a></li>
+<li class="toc-entry toc-h2"><a href="#Useful-points-to-know">Useful points to know </a></li>
+<li class="toc-entry toc-h2"><a href="#Hyperparameters">Hyperparameters </a></li>
+<li class="toc-entry toc-h2"><a href="#Interpretability">Interpretability </a></li>
+<li class="toc-entry toc-h2"><a href="#References">References </a></li>
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2020-08-10-KNN-Summary-Copy1.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Terminology">
+<a class="anchor" href="#Terminology" aria-hidden="true"><span class="octicon octicon-link"></span></a>Terminology<a class="anchor-link" href="#Terminology"> </a>
+</h2>
+<p>$N$ - Number of data points<br>
+$X_q$ - query data points<br>
+$X_{qn}$ - nth query data point<br>
+$X$ - input train data<br>
+$D$ - dimensionality of data<br>
+$C$ - Number of classes<br>
+$C_i$ - i^th class<br>
+$N_k$ - K nearst neighbors<br>
+$m$ - Number of epochs in SGD</p>
+<p>This blog was originally published in <a href="https://applied-ai-course.github.io/blog/knn/2020/08/10/KNN-Summary.html">this</a> link.</p>
+<h2 id="Algorithm">
+<a class="anchor" href="#Algorithm" aria-hidden="true"><span class="octicon octicon-link"></span></a>Algorithm<a class="anchor-link" href="#Algorithm"> </a>
+</h2>
+<ul>
+<li>Given a query point $X_{qn}$, find the $k$ nearest points in $X$. (You can use any distance metric)</li>
+<li>Count which class has maximum points in those $k$ nearest points and classify given query point $X_{qn}$ belongs to the same class. We can give weightage to the nearest points based on the distance (any function of distance). </li>
+<li>Probability of belonging to the specific class in a classification scenario is </li>
+</ul>
+<p><br>
+\begin{align}
+P(Y=C_i|X_q) = \frac{1}{K}\sum_{i\epsilon N_k}I(y_i==C_i) \\I(true) = 1, I(false) = 0
+\end{align}
+<br></p>
+<ul>
+<li>If we use KNN to solve the regression problem, we can get the average of nearest points and gives as output.</li>
+</ul>
+<p><br>
+\begin{align}
+Y_{X_q} = \frac{1}{K}\sum_{i\epsilon N_k}y_i
+\end{align}
+<br></p>
+<h2 id="Useful-points-to-know">
+<a class="anchor" href="#Useful-points-to-know" aria-hidden="true"><span class="octicon octicon-link"></span></a>Useful points to know<a class="anchor-link" href="#Useful-points-to-know"> </a>
+</h2>
+<ul>
+<li>There is no need for any specific process to work with multi-class classification because it works based on nearest neighbors.</li>
+<li>
+<p>There is no need for training if we want to use brute force search to get k-nearest neighbors. If we want to use Tree-based/LSH based/graph-based searching, we have to create a corresponding Tree/LSH forest/graph in the training time.</p>
+</li>
+<li>
+<p>Testing time complexity is $O(ND)$ if we use brute force search, it is very huge if we have more data points to train. If we need less time complexity go for Tree/LSH/graph-based neighbor search. Many tree algorithms give complexity of $O(D*log(N))$. 
+</p>
+<div class="flash flash-warn">
+    <svg class="octicon octicon-zap octicon octicon-zap octicon octicon-zap octicon octicon-zap octicon octicon-zap octicon octicon-zap octicon octicon-zap octicon octicon-zap" viewbox="0 0 10 16" version="1.1" width="10" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M10 7H6l3-7-9 9h4l-3 7 9-9z"></path></svg>
+    <strong>Important: </strong>You can check the benchmarking of NN searching algorithms in <a href="https://arxiv.org/pdf/1807.05614.pdf">this</a> paper and  <a href="https://github.com/erikbern/ann-benchmarks">this</a> GitHub
+</div>
+</li>
+<li>
+<p>It works based on distance measure so scaling the features is very important.</p>
+</li>
+<li>
+<p>Choosing a distance metric is very crucial. If we require a rotation-invariant distance metric then Euclidean distance is one of the best choices. But in high dimensions, a curious phenomenon arises: the ratio between the nearest and farthest points approaches 1, i.e. the points essentially become uniformly distant from each other. This phenomenon can be observed for a wide variety of distance metrics, but it is more pronounced for the Euclidean metric than, say, the Manhattan distance metric. You can read more about this in <a href="https://bib.dbvis.de/uploadedFiles/155.pdf">this</a> paper. 
+</p>
+<div class="flash flash-success">
+    <svg class="octicon octicon-checklist octicon octicon-checklist octicon octicon-checklist octicon octicon-checklist" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M16 8.5l-6 6-3-3L8.5 10l1.5 1.5L14.5 7 16 8.5zM5.7 12.2l.8.8H2c-.55 0-1-.45-1-1V3c0-.55.45-1 1-1h7c.55 0 1 .45 1 1v6.5l-.8-.8c-.39-.39-1.03-.39-1.42 0L5.7 10.8a.996.996 0 000 1.41v-.01zM4 4h5V3H4v1zm0 2h5V5H4v1zm0 2h3V7H4v1zM3 9H2v1h1V9zm0-2H2v1h1V7zm0-2H2v1h1V5zm0-2H2v1h1V3z"></path></svg>
+    <strong>Tip: </strong>High-dimensional spaces tend to be extremely sparse, which means that every point is far away from virtually every other point, and hence pairwise distances tend to be uninformative so before applying nearest-neighbor classification it is a good idea to plot a histogram of pairwise distances of a data to see if they are sufficiently varied.
+</div>
+</li>
+<li>
+<p>High-dimensional spaces may not give better results so using one-hot vectors may not be useful if have more categorical variables. so, try with mean encoding/frequency-based encoding or use dimensionality reduction techniques/feature selection to get the lower dimensionality data.</p>
+</li>
+<li>
+<p>This is not a linear model, so you can classify the non-linear data.</p>
+</li>
+<li>
+<p>An increase in the feature value not always leads to an increase or decrease in the target outcome/probability so, it is not a monotone model.</p>
+</li>
+<li>
+<p>It won't consider the interaction between the features. We have to create the interaction features if we need it. More interaction features may lead to less interpretability.</p>
+</li>
+</ul>
+<h2 id="Hyperparameters">
+<a class="anchor" href="#Hyperparameters" aria-hidden="true"><span class="octicon octicon-link"></span></a>Hyperparameters<a class="anchor-link" href="#Hyperparameters"> </a>
+</h2>
+<ul>
+<li>K is the Hyperparameter in K-NN. </li>
+<li>The low value of K will give more variance to the model. increasing the K, reduces the variance, and increases the bias of the model. </li>
+<li>You can check the decision surface of KNN for different K values in the below image. 
+<img src="https://i.imgur.com/2VZs7WW.png" alt="BN">
+</li>
+</ul>
+<h2 id="Interpretability">
+<a class="anchor" href="#Interpretability" aria-hidden="true"><span class="octicon octicon-link"></span></a>Interpretability<a class="anchor-link" href="#Interpretability"> </a>
+</h2>
+<ul>
+<li>There is a lack of global model interpretability because the model is inherently local and there are no global weights or structures explicitly learned.</li>
+<li>We can get interpretability based on the data we have i.e. datapoint $x_1$ is similar to the datapoint $x_2$ and $x_1$ caused $y$ so we predict that $x_2$ will cause $y$ as well.  So, we can get the k nearest neighbors and we can analyze/interpret those data points.</li>
+<li>If we have thousands of features, it is very difficult to analyze and get interpretability. </li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="References">
+<a class="anchor" href="#References" aria-hidden="true"><span class="octicon octicon-link"></span></a>References<a class="anchor-link" href="#References"> </a>
+</h2>
+<ol>
+<li><a href="https://stackexchange.com/">https://stackexchange.com/</a></li>
+<li><a href="https://arxiv.org/pdf/1807.05614.pdf">https://arxiv.org/pdf/1807.05614.pdf</a></li>
+<li><a href="https://bib.dbvis.de/uploadedFiles/155.pdf">https://bib.dbvis.de/uploadedFiles/155.pdf</a></li>
+<li><a href="https://helloacm.com/wp-content/uploads/2016/03/2012-10-26-knn-concept.png">https://helloacm.com/wp-content/uploads/2016/03/2012-10-26-knn-concept.png</a></li>
+</ol>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="UdiBhaskar/practical-ml"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/practical-ml/knn/2020/08/10/KNN-Summary-Copy1.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/practical-ml/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/practical-ml/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/practical-ml/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>A Machine Learning blog.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/UdiBhaskar" title="UdiBhaskar"><svg class="svg-icon grey"><use xlink:href="/practical-ml/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
