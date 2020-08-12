@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Summary - Logistic Regression Algorithm | Practical Machine Learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Summary - Logistic Regression Algorithm" />
+<meta name="author" content="Uday Paila" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="summary and useful points to know about LR" />
+<meta property="og:description" content="summary and useful points to know about LR" />
+<link rel="canonical" href="https://udibhaskar.github.io/practical-ml/logistic%20regression/classification/2020/08/11/Logistic-Regression-summary-Uday.html" />
+<meta property="og:url" content="https://udibhaskar.github.io/practical-ml/logistic%20regression/classification/2020/08/11/Logistic-Regression-summary-Uday.html" />
+<meta property="og:site_name" content="Practical Machine Learning" />
+<meta property="og:image" content="https://www.jeremyjordan.me/content/images/2017/06/Screen-Shot-2017-06-10-at-9.41.25-AM.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-08-11T00:00:00-05:00" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Uday Paila"},"description":"summary and useful points to know about LR","mainEntityOfPage":{"@type":"WebPage","@id":"https://udibhaskar.github.io/practical-ml/logistic%20regression/classification/2020/08/11/Logistic-Regression-summary-Uday.html"},"@type":"BlogPosting","url":"https://udibhaskar.github.io/practical-ml/logistic%20regression/classification/2020/08/11/Logistic-Regression-summary-Uday.html","headline":"Summary - Logistic Regression Algorithm","dateModified":"2020-08-11T00:00:00-05:00","datePublished":"2020-08-11T00:00:00-05:00","image":"https://www.jeremyjordan.me/content/images/2017/06/Screen-Shot-2017-06-10-at-9.41.25-AM.png","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/practical-ml/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://udibhaskar.github.io/practical-ml/feed.xml" title="Practical Machine Learning" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-171046409-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+<link rel="shortcut icon" type="image/x-icon" href="/practical-ml/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Summary - Logistic Regression Algorithm | Practical Machine Learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Summary - Logistic Regression Algorithm" />
+<meta name="author" content="Uday Paila" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="summary and useful points to know about LR" />
+<meta property="og:description" content="summary and useful points to know about LR" />
+<link rel="canonical" href="https://udibhaskar.github.io/practical-ml/logistic%20regression/classification/2020/08/11/Logistic-Regression-summary-Uday.html" />
+<meta property="og:url" content="https://udibhaskar.github.io/practical-ml/logistic%20regression/classification/2020/08/11/Logistic-Regression-summary-Uday.html" />
+<meta property="og:site_name" content="Practical Machine Learning" />
+<meta property="og:image" content="https://www.jeremyjordan.me/content/images/2017/06/Screen-Shot-2017-06-10-at-9.41.25-AM.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-08-11T00:00:00-05:00" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Uday Paila"},"description":"summary and useful points to know about LR","mainEntityOfPage":{"@type":"WebPage","@id":"https://udibhaskar.github.io/practical-ml/logistic%20regression/classification/2020/08/11/Logistic-Regression-summary-Uday.html"},"@type":"BlogPosting","url":"https://udibhaskar.github.io/practical-ml/logistic%20regression/classification/2020/08/11/Logistic-Regression-summary-Uday.html","headline":"Summary - Logistic Regression Algorithm","dateModified":"2020-08-11T00:00:00-05:00","datePublished":"2020-08-11T00:00:00-05:00","image":"https://www.jeremyjordan.me/content/images/2017/06/Screen-Shot-2017-06-10-at-9.41.25-AM.png","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://udibhaskar.github.io/practical-ml/feed.xml" title="Practical Machine Learning" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-171046409-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head><body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/practical-ml/">Practical Machine Learning</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/practical-ml/about/">About Me</a><a class="page-link" href="/practical-ml/search/">Search</a><a class="page-link" href="/practical-ml/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Summary - Logistic Regression Algorithm</h1><p class="page-description">summary and useful points to know about LR</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-08-11T00:00:00-05:00" itemprop="datePublished">
+        Aug 11, 2020
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Uday Paila</span></span>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      5 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/practical-ml/categories/#Logistic Regression">Logistic Regression</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/practical-ml/categories/#classification">classification</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          
+          
+          
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#Terminology">Terminology </a></li>
+<li class="toc-entry toc-h2"><a href="#Algorithm">Algorithm </a></li>
+<li class="toc-entry toc-h2"><a href="#Useful-points-to-know">Useful points to know </a></li>
+<li class="toc-entry toc-h2"><a href="#Hyperparameters">Hyperparameters </a></li>
+<li class="toc-entry toc-h2"><a href="#Interpretability">Interpretability </a></li>
+<li class="toc-entry toc-h2"><a href="#References">References </a></li>
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2020-08-11-Logistic Regression summary-Uday.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Terminology">
+<a class="anchor" href="#Terminology" aria-hidden="true"><span class="octicon octicon-link"></span></a>Terminology<a class="anchor-link" href="#Terminology"> </a>
+</h2>
+<p>$N$ - Number of data points<br>
+$X_q$ - query data points<br>
+$X_{qn}$ - nth query data point<br>
+$X$ - input train data<br>
+$D$ - dimensionality of data<br>
+$C$ - Number of classes<br>
+$C_i$ - i^th class<br>
+$N_k$ - K nearst neighbors<br>
+$m$ - Number of epochs in SGD</p>
+<p>This blog was originally published in <a href="https://applied-ai-course.github.io/blog/logistic%20regression/classification/2020/08/11/Logistic-Regression-summary-AAIC.html">this</a> link.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Algorithm">
+<a class="anchor" href="#Algorithm" aria-hidden="true"><span class="octicon octicon-link"></span></a>Algorithm<a class="anchor-link" href="#Algorithm"> </a>
+</h2>
+<p>We have to optimize the log loss value. We can do this using the Gradient Descent. optimization problem is</p>
+\begin{align}
+\min_{W, b} \sum_{i=1}^N \log(e^{- y_i (X_i^T W + b)} + 1)\\
+\text{ here }  C = 2 \text{ and } y_i = +1 \text{ or } -1 
+\end{align}<p><br></p>
+<p>once after optimization, we will get the W, b where loss $L(W,b)$ is minimum. We can predict the class probability of a query point using W, b as below.</p>
+\begin{align}
+P(y=1 | X_{qn}, W, b) = \frac{1}{1+e^{-(WX_{qn}+b)}}
+\end{align}<p>We can re-write the above same loss formulation as below,</p>
+\begin{align}
+\min_{W_{1},W_{2}...W_{C}, b}- \frac{1}{N} \sum_{i=0}^{N-1} \sum_{C=0}^{C-1} y_{i,c} \log p_{i,c}\\
+y_{i,c} = 1 \text{if sample i has label C taken from a set of C labels else 0} \\
+p_{i,c} = \frac{1}{1+e^{-(W_{C}X_{i}+b)}}
+\end{align}<p>Once after calculating W vectors, we can get C probabilities using $p_{i, c}$ and then classify the given query point as maximum probability class.</p>
+<p><br></p>
+<p>We can write the final formulation with regularization as below</p>
+\begin{align}
+\min_{W, b} C * \sum_{i=1}^N L(W,b) + \text{regularization_term}
+\end{align}<p>
+$$\text{or}$$
+</p>
+\begin{align}
+\min_{W, b}  \sum_{i=1}^N L(W,b) + \lambda * \text{regularization_term} 
+\end{align}<p><br></p>
+<p>We can handle multi-class classification in 3 ways,</p>
+<ol>
+<li>Using one-vs-rest approach and first formulation of loss </li>
+<li>Using one-vs-one approach and first formulation of loss</li>
+<li>Multinomial logistic regression - 2nd formulation of loss and softmax function in the place of sigmoid function to get C class probabilities. </li>
+</ol>
+<p><br></p>
+<p>You can read more about LR in <a href="https://medium.com/@udaybhaskarpaila/math-behind-logistic-regression-3d7d53ec3091">this</a> blog and <a href="https://medium.com/@udaybhaskarpaila/everything-you-need-to-know-about-logistic-regression-18e740be87a0">this</a> blog</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Useful-points-to-know">
+<a class="anchor" href="#Useful-points-to-know" aria-hidden="true"><span class="octicon octicon-link"></span></a>Useful points to know<a class="anchor-link" href="#Useful-points-to-know"> </a>
+</h2>
+<ul>
+<li>
+<p>If we want to use logistic regression for multi-class classification, we have to use one-vs-rest/one-vs-one/multinomial.</p>
+</li>
+<li>
+<p>Time complexity of training is $O(mCND)$ and prediction is $O(CD)$. Prediction time is very less so we can use logistic regression for low latency applications.</p>
+</li>
+<li>
+<p>We can train the model using the iterative algorithm so there is no need to load total data into RAM (We can load chunk by chunk if we have huge data). We can use this model in online training too. Check the <code>partial_fit</code> function in <code>sklearn</code> implementation.</p>
+</li>
+<li>
+<p>It assumes</p>
+<ul>
+<li>Observations should not come from repeated measurements.</li>
+<li>None or Little Multicollinearity</li>
+<li>The linearity of independent variables and Log odds - It requires features that are linearly related to the log-odds/logits, i.e $log(\frac{P}{1-P})$</li>
+</ul>
+</li>
+<li>
+<p>We can parallelize the multi-class logistic regression using one-vs-rest in sklearn. If you want for binary classification, use data parallelization, and accumulate gradients.</p>
+</li>
+<li>
+<p>It is a linear model, it cannot classify non-linear data. If you have non-linear data, do feature engineering and try to get linear data.</p>
+</li>
+<li>
+<p>Higher dimensional data (not Huge) may lead to linear separable sometimes.</p>
+</li>
+<li>
+<p>An increase in the feature value always leads to an increase or decrease in the target outcome(not probability, to logit/log-odds) so, it is a monotone model to log-odds/logits. Please check the interpretability below to know more about logit.</p>
+</li>
+<li>
+<p>It won't consider the interaction between the features. We have to create the interaction features if we need it. More interaction features may lead to less interpretability.</p>
+</li>
+</ul>
+<h2 id="Hyperparameters">
+<a class="anchor" href="#Hyperparameters" aria-hidden="true"><span class="octicon octicon-link"></span></a>Hyperparameters<a class="anchor-link" href="#Hyperparameters"> </a>
+</h2>
+<ul>
+<li>C is the main hyperparameter we have (this is different from C classes we are using) </li>
+<li>High C value means less regularization strength. </li>
+<li>C is a multiplicative constant to loss term. While optimization we have to find the minimum value of the loss(Log loss+regularization). If we increase the C value, Log loss has to decrease so that final loss will decrease, i.e log loss will get very near to zero if C increases, so it may be overly certain about training data, so it overfits.</li>
+<li>The below image contains decision hyperplanes for each value of C. You can observe that increasing the C value is reducing the regularization and overfitting to the data. </li>
+</ul>
+<p><br></p>
+<p><img src="https://i.imgur.com/CU7Ry7c.png" alt="Hyperplane" title="Hyperplanes for different values of C"></p>
+<p><br></p>
+<ul>
+<li>
+<p>In the above figure, we are getting similar classification results for all C greater than 0.5 but, increasing the C value reduces the regularization strength and increases the magnitude of weight vector values. You can check that in the below figure.
+<img src="https://i.imgur.com/lk3IqXu.png" alt="weightvector" title="Weight Vector values for each C"></p>
+</li>
+<li>
+<p>If two hyperplanes are giving similar results, get the best hyperplane based on the magnitude of weights. low weight is better because it gives more regularization and it won't overestimate the probability value.
+</p>
+<div class="flash flash-warn">
+    <svg class="octicon octicon-zap octicon octicon-zap octicon octicon-zap octicon octicon-zap octicon octicon-zap octicon octicon-zap octicon octicon-zap octicon octicon-zap octicon octicon-zap" viewbox="0 0 10 16" version="1.1" width="10" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M10 7H6l3-7-9 9h4l-3 7 9-9z"></path></svg>
+    <strong>Important: </strong>Let’s take two planes. plane1 is 1.5f1 + 2.4f2 + 1 = 0, plane2 is 4.5f1 + 7.2f2 + 3 = 0. Both planes are mathematically same, only weight values are changed, but for a query point (0, 0), plane1 will give a probability of 0.73 and plane2 will give a probability of 0.95. But, the distance of the point (0,0) from both planes is the same that is 0.35 only. so large weights lead to overestimation of probabilities even though they are near to the plane.
+</div>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Interpretability">
+<a class="anchor" href="#Interpretability" aria-hidden="true"><span class="octicon octicon-link"></span></a>Interpretability<a class="anchor-link" href="#Interpretability"> </a>
+</h2>
+<p>From logistic regression prediction probability function, we can write</p>
+<p><br></p>
+\begin{align}
+log\left(\frac{P(y=1)}{1-P(y=1)}\right)=log\left(\frac{P(y=1)}{P(y=0)}\right)=W_{0}+W_{1}x_{1}+\ldots+W_{d}x_{d}
+\end{align}<p><br></p>
+\begin{align}
+odds = \left(\frac{P(y=1)}{1-P(y=1)}\right)=\left(\frac{P(y=1)}{P(y=0)}\right)=e^{W_{0}+W_{1}x_{1}+\ldots+W_{d}x_{d}}
+\end{align}<p><br></p>
+<p>If odds = 3 then $P(y=1)$ is thrice as high as $P(y=0)$</p>
+<p><br></p>
+<p>If the feature $x_{j}$ is changed by n unit and the ratio of odds after the change and before the change is</p>
+\begin{align}
+\frac{odds_{x_j+n}}{odds}=\frac{e^{\left(W_{0}+W{1}x_{1}+\ldots+W_{j}(x_{j}+n)+\ldots+W_{d}x_{d}\right)}}{e^{\left(W_{0}+W_{1}x_{1}+\ldots+W_{j}x_{j}+\ldots+W_{d}x_{d}\right)}}
+\end{align}<p><br></p>
+\begin{align}
+\frac{odds_{x_j+1}}{odds}=e^{\left(W_{j}(x_{j}+n)-W_{j}x_{j}\right)}=e^{\left(nW_j\right)}
+\end{align}<p><br>
+If we increase the feature $x_{j}$ by n unit, the odds change by factor of $e^{nW_j}$</p>
+<p>We can interpret the odds. If odds = k, $P(y=1) = k*P(y=0)$</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="References">
+<a class="anchor" href="#References" aria-hidden="true"><span class="octicon octicon-link"></span></a>References<a class="anchor-link" href="#References"> </a>
+</h2>
+<ol>
+<li><a href="https://www.appliedaicourse.com/">AppliedAICourse.com</a></li>
+<li><a href="https://stackexchange.com/">https://stackexchange.com/</a></li>
+<li>An Introduction to Statistical Learning - Book</li>
+<li><a href="https://www.jeremyjordan.me/content/images/2017/06/Screen-Shot-2017-06-10-at-9.41.25-AM.png">https://www.jeremyjordan.me/content/images/2017/06/Screen-Shot-2017-06-10-at-9.41.25-AM.png</a></li>
+</ol>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="UdiBhaskar/practical-ml"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/practical-ml/logistic%20regression/classification/2020/08/11/Logistic-Regression-summary-Uday.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/practical-ml/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/practical-ml/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/practical-ml/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>A Machine Learning blog.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/UdiBhaskar" title="UdiBhaskar"><svg class="svg-icon grey"><use xlink:href="/practical-ml/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
