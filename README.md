@@ -6,7 +6,7 @@
 
 https://UdiBhaskar.github.io/practical-ml/
 
-# My Blog
+# My Blog - new
 
 
 _powered by [fastpages](https://github.com/fastai/fastpages)_
